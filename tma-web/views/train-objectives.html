@@ -1,0 +1,224 @@
+<header>
+	<div class="row">
+		<div class="small-12 medium-12 large-12 columns">
+			<h1 class="left mr-20" translate="trainObjectives.title"></h1>
+			<span class="left"><a href="" ng-click="newTrainObjective()" class="button radius mr-8 header-button"><i class="fa fa-plus"></i> {{'trainObjectives.addTrainObjective' | translate}}</a>
+				<a href="" class="button radius margin-reset" ng-click="showFilterModal()"><i class="fa fa-filter"></i> {{'trainObjectives.filters' | translate}}</a>
+			</span>
+		</div>
+	</div>
+</header>
+
+<div class="row flexbox-va mt-15 ng-scope">
+	<div class="small-12 medium-12 large-12 columns">
+		<span class="filter-tag" ng-show="options.dateFrom">
+			<span class="left">{{'filter.dateFrom' | translate}}: {{options.dateFrom}}</span>
+			<a href="" ng-click="removeSelectedFilter('dateFrom')" class="right close"><i class="fa fa-times-circle"></i></a>
+		</span>
+		<span class="filter-tag" ng-show="options.dateTo">
+			<span class="left">{{'filter.dateTo' | translate}}: {{options.dateTo}}</span>
+			<a href="" ng-click="removeSelectedFilter('dateTo')" class="right close"><i class="fa fa-times-circle"></i></a>
+		</span>
+	</div>
+</div>
+<div class="row mt-15" ng-init="list()">
+	<div class="small-12 medium-12 large-12 large-centered columns">
+		<table width="100%">
+			<thead>
+				<tr>
+					<th translate="trainObjectives.table.title"></th>
+					<th translate="trainObjectives.table.dateFrom"></th>
+					<th translate="trainObjectives.table.dateTo"></th>
+					<th></th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr ng-repeat="t in results.content">
+					<td width="60%">
+						{{showTitle(t.scripts)}}
+					</td>
+					<td>{{t.from | date:"dd-MM-yyyy"}}</td>
+					<td>{{t.to | date:"dd-MM-yyyy"}}</td>
+					<td>
+						<div class="right"><a href="" ng-click="editTrainObjective(t)" class="button radius small margin-reset">
+							<i class="fa fa-pencil hide-for-small"></i> {{'trainObjectives.editTrainObjective' | translate}}</a>
+						<a href="" ng-click="removeTrainObjective(t)" class="button radius small margin-reset">
+						<i class="fa fa-times hide-for-small"></i> {{'trainObjectives.deleteTrainObjective' | translate}}</a></div>
+					</td>
+				</tr>
+			</tbody>
+		</table>
+		<div pagination content="results" callback="changePage"></div>
+	</div>
+</div>
+<!-- End objectives list -->
+
+<!-- Start Create Objective lightbox -->
+<div id="trainObjectivesModal" class="reveal-modal medium">
+	<h2 ng-show="trainObjectivesModal.isNewTrainObjective" translate="trainObjectives.addTrainObjective" class="modal-header"></h2>
+	<h2 ng-show="!trainObjectivesModal.isNewTrainObjective" class="modal-header">{{'trainObjectives.editTrainObjective' | translate}} {{trainObjectivesModal.title}}</h2>
+		<form>
+			<div class="row">
+				<div class="small-12 medium-10 large-9 columns">
+					<div class="row">
+						<div class="small-2 medium-2 large-1 columns">
+							<label for="objective-date-from" class="inline"><span class="red">*</span> {{'trainObjectives.dateFrom' | translate}}</label>
+						</div>
+						<div class="small-10 medium-10 large-11 columns" ng-class="{error: errors.from}">
+							<input id="objective-date-from" type="text" ng-model="trainObjectivesModal.trainObjective.from" placeholder="{{'trainObjectives.dateFrom.placeholder' | translate}}" data-date-format="dd-mm-yyyy">
+							<small ng-show="errors.from">{{errors.from | translate}}</small>
+						</div>
+					</div>
+					<div class="row">
+						<div class="small-2 medium-2 large-1 columns">
+							<label for="objective-date-to" class="inline"><span class="red">*</span> {{'trainObjectives.dateTo' | translate}}</label>
+						</div>
+						<div class="small-10 medium-10 large-11 columns" ng-class="{error: errors.to}">
+							<input id="objective-date-to" type="text" ng-model="trainObjectivesModal.trainObjective.to" placeholder="{{'trainObjectives.dateTo.placeholder' | translate}}" data-date-format="dd-mm-yyyy">
+							<small ng-show="errors.to">{{errors.to | translate}}</small>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<div class="row mt-15">
+				<div class="small-12 medium-12 large-12 columns">
+					<div class="section-container tabs" data-section="tabs" ng-init="tab = tab == null ? 'english' : tab">
+						<section ng-class="{active: tab == 'english'}">
+							<p class="title"><a ng-click="tab = 'english'"><img src="img/flag_uk.jpg" alt="English" /> {{'trainObjectives.english' | translate}}</a></p>
+						</section>
+						<section ng-class="{active: tab == 'french'}">
+							<p class="title"><a ng-click="tab = 'french'"><img src="img/flag_france.jpg" alt="French" /> {{'trainObjectives.french' | translate}}</a></p>
+						</section>
+						<section ng-class="{active: tab == 'dutch'}">
+							<p class="title"><a ng-click="tab = 'dutch'"><img src="img/flag_belgium.jpg" alt="Dutch" /> {{'trainObjectives.dutch' | translate}}</a></p>
+						</section>
+					</div>
+
+					<div class="tabs">
+						<div class="content" class="content" ng-show="tab == 'english'">
+							<div class="row">
+								<div class="small-2 medium-1 large-1 columns">
+									<label for="objective-english-title" class="inline"><span class="red">*</span> {{'trainObjectives.english.title' | translate}}</label>
+								</div>
+								<div class="small-10 medium-11 large-11 columns" ng-class="{error: errors.scripts}">
+									<input id="objective-english-title" type="text" ng-model="trainObjectivesModal.trainObjective.scripts['en'].title" placeholder="{{'trainObjectives.english.title.placeholder' | translate}}">
+									<small ng-show="errors.scripts">{{errors.scripts | translate}}</small>
+								</div>
+							</div>
+							<div class="row">
+								<div class="small-12 medium-12 large-12 columns" ng-class="{error: errors.scripts}">
+									<textarea id="objective-english" type="text" ng-model="trainObjectivesModal.trainObjective.scripts['en'].script" placeholder="{{'trainObjectives.english.placeholder' | translate}}"></textarea>
+									<small ng-show="errors.scripts">{{errors.scripts | translate}}</small>
+								</div>
+							</div>
+						</div>
+						<div class="content" ng-show="tab == 'french'">
+							<div class="row">
+								<div class="small-2 medium-1 large-1 columns">
+									<label for="objective-french-title" class="inline"><span class="red">*</span> {{'trainObjectives.french.title' | translate}}</label>
+								</div>
+								<div class="small-10 medium-11 large-11 columns" ng-class="{error: errors.scripts}">
+									<input id="objective-french-title" type="text" ng-model="trainObjectivesModal.trainObjective.scripts['fr'].title"  placeholder="{{'trainObjectives.french.title.placeholder' | translate}}">
+									<small ng-show="errors.scripts">{{errors.scripts | translate}}</small>
+								</div>
+							</div>
+							<div class="row">
+								<div class="small-12 medium-12 large-12 columns" ng-class="{error: errors.scripts}">
+									<textarea id="objective-french" type="text" ng-model="trainObjectivesModal.trainObjective.scripts['fr'].script" placeholder="{{'trainObjectives.french.placeholder' | translate}}"></textarea>
+									<small ng-show="errors.scripts">{{errors.scripts | translate}}</small>
+								</div>
+							</div>
+						</div>
+						<div class="content" ng-show="tab == 'dutch'">
+							<div class="row">
+								<div class="small-2 medium-1 large-1 columns" ng-class="{error: errors.scripts}">
+									<label for="objective-dutch-title" class="inline"><span class="red">*</span> {{'trainObjectives.dutch.title' | translate}}</label>
+								</div>
+								<div class="small-10 medium-11 large-11 columns">
+									<input id="objective-dutch-title" type="text" ng-model="trainObjectivesModal.trainObjective.scripts['nl'].title"  placeholder="{{'trainObjectives.dutch.title.placeholder' | translate}}">
+									<small ng-show="errors.scripts">{{errors.scripts | translate}}</small>
+								</div>
+							</div>
+							<div class="row">
+								<div class="small-12 medium-12 large-12 columns" ng-class="{error: errors.scripts}">
+									<textarea id="objective-dutch" type="text" ng-model="trainObjectivesModal.trainObjective.scripts['nl'].script"  placeholder="{{'trainObjectives.dutch.placeholder' | translate}}"></textarea>
+									<small ng-show="errors.scripts">{{errors.scripts | translate}}</small>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+
+		<div class="modal-action-buttons flexbox-h-end">
+			<div class="row">
+				<div class="small-12 medium-12 large-12 columns">
+					<span class="right"><a href="" class="button cancel radius small left mr-8" translate="trainObjectives.modal.cancel" ng-click="cancelModal()"></a>
+					<a href="" class="button radius small margin-reset" translate="trainObjectives.modal.save" ng-click="saveTrainObjective()"></a></span>
+				</div>
+			</div>
+		</div>
+
+	</form>
+	<a class="close-reveal-modal" ng-click="cancelModal()">&#215;</a>
+</div>			
+<!-- End Create Objective lightbox -->
+
+<div class="overlay" ng-show="showFilters"></div>
+<div class="row" id="trainObjectives-filters" ng-show="showFilters">
+	<div class="small-4 medium-3 large-2 columns filter-nav off-canvas">
+		<!-- Start header -->
+		<div class="row">
+			<div class="small-12 medium-12 large-12 columns">
+				<a href="" class="right close-button" ng-click="hideFilterModal()"><i class="fa fa-times"></i></a>
+			</div>
+		</div>
+		<div class="row flexbox-va">
+			<div class="small-12 medium-12 large-12 columns">
+				<header>
+					<h2 translate="filter.title"></h2>
+				</header>
+			</div>
+		</div>
+		<!-- End header -->
+
+		<!-- Start Accordion -->
+		<div class="section-container accordion">
+			<!-- Start Date Range -->
+			<section class="active">
+				<p class="title" data-section-title>
+					<a href="" ng-click="switchFilterView('dateFrom')" class="filter-heading" translate="filter.title.dateRange"></a>
+				</p>
+				<div class="content" data-section-content>
+					<div class="row filter-options">
+						<div class="small-4 medium-4 large-3 columns">
+							<label for="date-from" class="inline left" translate="filter.dateFrom"></label>
+						</div>
+						<div class="small-8 medium-8 large-9 columns">
+							<input type="text" id="date-from" ng-model="filters.dateFrom" placeholder="{{'filter.dateFrom.placeholder' | translate}}" data-date-format="dd-mm-yyyy">
+						</div>
+					</div>
+					<div class="row filter-options">
+						<div class="small-4 medium-4 large-3 columns">
+							<label for="date-to" class="inline left" translate="filter.dateTo"></label>
+						</div>
+						<div class="small-8 medium-8 large-9 columns">
+							<input type="text" id="date-to" ng-model="filters.dateTo" placeholder="{{'filter.dateTo.placeholder' | translate}}" data-date-format="dd-mm-yyyy">
+						</div>
+					</div>
+				</div>
+			</section>
+			<!-- End Date Range -->
+		</div>
+		<!-- End Accordion -->
+		<!-- Start Apply button -->
+		<div class="row mt-15">
+			<div class="small-12 medium-12 large-12 columns flexbox-h-end">
+				<a href="" class="button radius right margin-reset" translate="filter.button.apply" ng-click="applyFilters()"></a>
+			</div>
+		</div>
+		<!-- End Apply button -->
+	</div>
+</div>
+<!-- End filter modal -->

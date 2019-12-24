@@ -1,0 +1,66 @@
+<header>
+	<div class="row">
+		<div class="small-12 medium-12 large-12 columns">
+			<h1 class="left mr-20" translate="faults.title"></h1>
+			<span class="left"><button class="button radius mr-8"><i class="fa fa-filter"></i> {{'faults.tmiDepot.filters' | translate}}</button>
+				<button class="button radius margin-reset"><i class="fa fa-table"></i> {{'faults.tmiDepot.export' | translate}}</button></span>
+		</div>
+	</div>
+</header>
+
+<!-- Start Filter tags -->
+<!-- TODO: Filter tags need to be dynamic -->
+<div ng-include src="'shared/filter-tag.html'"></div>
+<!-- End Filter tags -->
+
+<!-- Start Key -->
+<div class="row mt-15 flexbox-va">
+	<div class="small-12 medium-12 large-12 columns flexbox-va">
+		<span class="status depeche"></span> <span translate="faults.status.depeche"></span>
+	</div>
+</div>
+<!-- End Key -->
+
+<!-- Start TMI depot table -->
+<div class="depot-table mt-15">
+	<table width="100%">
+		<thead>
+			<tr>
+				<th translate="faults.tmiDepot.table.dateReported"></th>
+				<th translate="faults.tmiDepot.table.status"></th>
+				<th translate="faults.tmiDepot.table.setNumber"></th>
+				<th translate="faults.tmiDepot.table.coachNumber"></th>
+				<th translate="faults.tmiDepot.table.area"></th>
+				<th translate="faults.tmiDepot.table.equipment"></th>
+				<th translate="faults.tmiDepot.table.condition"></th>
+				<th translate="faults.tmiDepot.table.priority"></th>
+			</tr>
+		</thead>
+		<tbody>
+			<!-- TODO: Needs to be dynamic -->
+			<tr class="priority-depeche">
+				<td>22-11-11</td>
+				<td>OPEN</td>
+				<td>3004</td>
+				<td>R1</td>
+				<td>Catering Area</td>
+				<td>Catering Equipment</td>
+				<td>Does not open</td>
+				<td>DEPECHE</td>
+			</tr>
+			<!-- TODO: Needs to be dynamic -->
+			<tr>
+				<td>22-11-11</td>
+				<td>OPEN</td>
+				<td>3004</td>
+				<td>R1</td>
+				<td>Catering Area</td>
+				<td>Catering Equipment</td>
+				<td>Does not open</td>
+				<td>DEPECHE</td>
+			</tr>
+			<tr>
+		</tbody>
+	</table>
+</div>
+<!-- Start TMI depot table -->

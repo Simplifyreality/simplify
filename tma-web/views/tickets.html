@@ -1,0 +1,33 @@
+<div class="row mt-15">
+  <div class="small-12 medium-12 large-12 columns">
+    <!-- Start failed scans result table -->
+    <div class="journey-log-result-table">
+      <table width="100%" ng-init="list()">
+        <thead>
+        <tr>
+          <th>{{ 'tickets.pnr' | translate}}</th>
+          <th>{{ 'tickets.coach' | translate}}</th>
+          <th>{{ 'tickets.seatNumber' | translate}}</th>
+          <th>{{ 'tickets.class' | translate}}</th>
+          <th>{{ 'tickets.name' | translate}}</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr ng-repeat="ticket in results.content track by $index">
+          <td>{{ticket.pnr}}</td>
+          <td>{{ticket.coachNumber}}</td>
+          <td>{{ticket.seatNumber}}</td>
+          <td>
+            <span ng-if="ticket.classNumber === '0'">STD</span>
+            <span ng-if="ticket.classNumber === '1'">SP</span>
+            <span ng-if="ticket.classNumber === '2'">BP</span>
+          </td>
+          <td>{{ticket.scannedBy}}</td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+    <!-- End failed scans result table -->
+    <div pagination content="results" callback="changePage"></div>
+  </div>
+</div>

@@ -1,0 +1,249 @@
+<!doctype html>
+<!--[if lt IE 9]> <html class="lt-ie9" xmlns:ng="http://angularjs.org" id="ng-app" ng-app="tmweb"> <![endif]-->
+<!--[if gt IE 8]><!--> <html xmlns:ng="http://angularjs.org" id="ng-app" ng-app="tmweb"> <!--<![endif]-->
+	<head>
+		<meta charset="utf-8">
+		<title>Eurostar TMA-Web</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<script>
+			//<!--
+			if (navigator.userAgent.match(/MSIE 8/i)) {
+				document.write('<script src=\"js/vendor/html5shiv.js\"><\/script>');
+			}
+			//-->
+		</script>
+
+		<!-- Application stylesheets-->
+		<link rel="stylesheet" href="styles/css/app.css">
+	</head>
+	<body ng-cloak>
+		<div class="row">
+			<div class="small-12 medium-12 large-12 columns">
+				<header class="navbar navbar-default" role="navigation" ng-show="loggedIn" ng-controller="NavigationController">
+					<!-- Start nav for small -->
+					<div class="show-for-small">
+						<div class="row">
+							<div class="small-12 medium-12 large-12 columns">
+								<div class="fixed">
+									<nav class="top-bar" data-options="is_hover:false">
+										<ul class="title-area">
+											<li class="name">
+												<a href="#/" class="flexbox-va svg logo">
+													<object data="img/eurostar-logo.svg" type="image/svg+xml" width="100" height="37" class="mr-8">
+														<img src="img/eurostar-logo.png" alt="Eurostar" class="mr-8" />
+													</object>
+												</a>
+											</li>
+
+											<li class="toggle-topbar menu-icon"><a href=""><span></span></a></li>
+										</ul>
+
+										<section class="top-bar-section">
+											<ul class="left">
+												<li ng-show="hasPermission('ROLE_JOURNEY_LOG') && userGroup != 'MOMENTUM'"><a href="#/journeys">{{'menu.journeyLogs' | translate}}</a></li><!--ng-show="hasPermission('ROLE_JOURNEY_LOG')"-->
+												<li ng-show="hasPermission('ROLE_JOURNEY_LOG') && userGroup == 'MOMENTUM'"><a href="#/journeys-momentum">{{'menu.journeyLogs' | translate}}</a></li>
+												<li ng-show="hasPermission('ROLE_ISSUES')"><a href="#/issues">{{'menu.issues' | translate}}</a></li>
+												<li ng-show="hasPermission('ROLE_DAILY_SPECIALS')"><a href="#/specials">{{'menu.specials' | translate}}</a></li>
+												<li ng-show="hasPermission('ROLE_TRAIN_OBJECTIVES')"><a href="#/train-objectives">{{'menu.commercialFocus' | translate}}</a></li>
+												<li ng-show="hasPermission('ROLE_FAULTS_READONLY') || hasPermission('ROLE_FAULTS_WRITE')"><a href="#/fault-history">{{'menu.faultHistory' | translate}}</a></li>
+												<li ng-show="hasPermission('ROLE_EMESSAGE')"><a href="#/emessage">{{'menu.eMessage' | translate}}</a></li>
+												<li ng-show="hasPermission('ROLE_BOARDING')"><a href="#/boarding">{{'menu.boardingMeal' | translate}}</a></li>
+												<li ng-show="hasPermission('ROLE_CLEANING')"><a href="#/cleaning">{{'menu.cleaning' | translate}}</a></li>
+												<li ng-show="hasPermission('ROLE_RESET_PASSWORD') || hasPermission('ROLE_USERS') || hasPermission('ROLE_EDIT_USERS')"><a href="#/admin/users">{{'menu.admin.users' | translate}}</a></li>
+												<li ng-show="hasPermission('ROLE_ROLES')"><a href="#/admin/roles">{{'menu.admin.roles' | translate}}</a></li>
+												<li ng-show="hasPermission('ROLE_ADDRESSES')"><a href="#/admin/addresses">{{'menu.admin.addressManagement' | translate}}</a></li>
+												<li ng-show="hasPermission('ROLE_ISSUE_CATEGORIES')"><a href="#/admin/issues-category-management">{{'menu.admin.issuesCategoryManagement' | translate}}</a></li>
+												<li ng-show="hasPermission('ROLE_STANDARD_ANNOUNCEMENTS')"><a href="#/admin/announcements">{{'menu.admin.announcements' | translate}}</a></li>
+												<li ng-show="hasPermission('ROLE_MOMENTUM_NAMES')"><a href="#/admin/momentum-names">{{'menu.admin.momentum' | translate}}</a></li>
+												<li><a href="#/logout">{{'menu.logout' | translate}}</a></li>
+											</ul>
+										</section>
+									</nav>
+								</div>
+							</div>
+						</div>
+					</div>
+					<!-- End nav for small -->
+					<!-- Start nav for medium up -->
+					<div class="show-for-medium-up">
+						<div class="row">
+							<div class="small-12 medium-12 large-12 columns">
+								<div class="fixed">
+									<nav class="top-bar" data-options="is_hover:false">
+										<ul class="title-area">
+											<li class="name">
+												<a href="#/" class="flexbox-va svg logo">
+													<object data="img/eurostar-logo.svg" type="image/svg+xml" width="100" height="37" class="mr-8">
+														<img src="img/eurostar-logo.png" alt="Eurostar" class="mr-8" />
+													</object>
+												</a>
+											</li>
+
+											<li class="toggle-topbar menu-icon"><a href=""><span></span></a></li>
+										</ul>
+
+										<section class="top-bar-section">
+											<ul class="left">
+												<li ng-show="hasPermission('ROLE_JOURNEY_LOG') && userGroup != 'MOMENTUM'"><a href="#/journeys">{{'menu.journeyLogs' | translate}}</a></li>
+												<li ng-show="hasPermission('ROLE_JOURNEY_LOG') && userGroup == 'MOMENTUM'"><a href="#/journeys-momentum">{{'menu.journeyLogs' | translate}}</a></li>
+												<li ng-show="hasPermission('ROLE_ISSUES')"><a href="#/issues">{{'menu.issues' | translate}}</a></li>
+												<li ng-show="hasPermission('ROLE_DAILY_SPECIALS')"><a href="#/specials">{{'menu.specials' | translate}}</a></li>
+												<li ng-show="hasPermission('ROLE_TRAIN_OBJECTIVES')"><a href="#/train-objectives">{{'menu.commercialFocus' | translate}}</a></li>
+												<li ng-show="hasPermission('ROLE_FAULTS_READONLY') || hasPermission('ROLE_FAULTS_WRITE')"><a href="#/fault-history">{{'menu.faultHistory' | translate}}</a></li>
+												<li ng-show="hasPermission('ROLE_EMESSAGE')"><a href="#/emessage">{{'menu.eMessage' | translate}}</a></li>
+												<li ng-show="hasPermission('ROLE_BOARDING')"><a href="#/boarding">{{'menu.boardingMeal' | translate}}</a></li>
+												<li ng-show="hasPermission('ROLE_CLEANING')"><a href="#/cleaning">{{'menu.cleaning' | translate}}</a></li>
+											</ul>
+											<ul class="right">
+												<li id="adminMenu" class="has-dropdown" ng-show="hasPermission('ROLE_RESET_PASSWORD') || hasPermission('ROLE_USERS') || hasPermission('ROLE_EDIT_USERS') || hasPermission('ROLE_ROLES') || hasPermission('ROLE_ADDRESSES') || hasPermission('ROLE_ISSUE_CATEGORIES') || hasPermission('ROLE_STANDARD_ANNOUNCEMENTS')">
+													<a href="" ng-click="openAdmin()">Logged as {{username | uppercase}}</a>
+													<ul id="adminDropDown" class="dropdown">
+														<li ng-show="hasPermission('ROLE_RESET_PASSWORD') || hasPermission('ROLE_USERS') || hasPermission('ROLE_EDIT_USERS')"><a href="#/admin/users">{{'menu.admin.users' | translate}}</a></li>
+														<li ng-show="hasPermission('ROLE_ROLES')"><a href="#/admin/roles">{{'menu.admin.roles' | translate}}</a></li>
+														<li ng-show="hasPermission('ROLE_ADDRESSES')"><a href="#/admin/addresses">{{'menu.admin.addressManagement' | translate}}</a></li>
+														<li ng-show="hasPermission('ROLE_ISSUE_CATEGORIES')"><a href="#/admin/issues-category-management">{{'menu.admin.issuesCategoryManagement' | translate}}</a></li>
+														<li ng-show="hasPermission('ROLE_STANDARD_ANNOUNCEMENTS')"><a href="#/admin/announcements">{{'menu.admin.announcements' | translate}}</a></li>
+														<li ng-show="hasPermission('ROLE_MOMENTUM_NAMES')"><a href="#/admin/momentum-names">{{'menu.admin.momentum' | translate}}</a></li>
+														<li ng-show="hasPermission('ROLE_JOURNEY_LOG') && hasPermission('ROLE_FAULTS_READONLY') && hasPermission('ROLE_DAILY_SPECIALS') &&
+															hasPermission('ROLE_SYNC') && hasPermission('ROLE_ISSUES')">
+															<a href="#/journeys/tickets">{{'tickets.scans' | translate}}</a>
+														</li>
+													</ul>
+												</li>
+												<li><a href="#/logout">{{'menu.logout' | translate}}</a></li>
+											</ul>
+										</section>
+									</nav>
+								</div>
+							</div>
+						</div>
+					</div>
+					<!-- End nav for medium up -->
+				</header>
+			<!-- Main View Container -->
+			<div class="container">
+				<div class="row">
+					<!-- Start main column -->
+					<div class="small-12 medium-12 large-12 columns main-content">
+						<div ng-view></div>
+					</div>
+				</div>
+			</div>
+			<div ng-init="spinif=true">
+				<div class="spinner-backdrop" ng-show="spinif"></div>
+			    <div spin="spinConfig" spin-if="spinif" class="spinner-position"></div>
+			</div>
+		</div>
+	</div>
+
+		<script>
+			(function () {
+				var v = Date.now();
+
+				var vendors = [
+					'js/app/lang/labels.js',
+					'js/vendor/jquery.min.js',
+					'js/vendor/spin.js',
+					'js/angular/angular.min.js',
+					'js/angular/angular-resource.min.js',
+					'js/angular/angular-cookies.min.js',
+					'js/angular/angular-route.min.js',
+					'js/angular/angular-animate.min.js',
+					'js/angular/angular-translate.min.js',
+					'js/angular/angular-spin.js',
+					'js/angular/angular-xeditable.min.js',
+					'js/angular/angular-window-events.js',
+					'js/angular/angular-checklist-model.js'
+				];
+
+				var app = [
+					'js/app/config.js',
+					'js/app/app.js'
+				];
+
+				var services = [
+					'js/app/service/http-queue.js',
+					'js/app/service/security.js',
+					'js/app/service/user-service.js',
+					'js/app/service/role-service.js',
+					'js/app/service/journey-service.js',
+					'js/app/service/issue-service.js',
+					'js/app/service/fault-service.js',
+					'js/app/service/fault-category-service.js',
+					'js/app/service/announcement-service.js',
+					'js/app/service/issue-category-service.js',
+					'js/app/service/address-service.js',
+					'js/app/service/message-service.js',
+					'js/app/service/train-objective-service.js',
+					'js/app/service/base-data-service.js',
+					'js/app/service/app-service.js',
+					'js/app/service/meal-service.js',
+					'js/app/service/filters-transmission-service.js',
+					'js/app/service/tickets-service.js',
+				];
+
+				var controllers = [
+					'js/app/controller/journey-logs-momentum-controller.js',
+					'js/app/controller/view-journey-momentum-controller.js',
+					'js/app/controller/admin-controller.js',
+					'js/app/controller/emessage-controller.js',
+					'js/app/controller/fault-history-controller.js',
+					'js/app/controller/home-controller.js',
+					'js/app/controller/issue-controller.js',
+					'js/app/controller/journey-logs-controller.js',
+					'js/app/controller/view-journey-controller.js',
+					'js/app/controller/login-controller.js',
+					'js/app/controller/reset-password-controller.js',
+					'js/app/controller/logout-controller.js',
+					'js/app/controller/navigation-controller.js',
+					'js/app/controller/role-controller.js',
+					'js/app/controller/specials-controller.js',
+					'js/app/controller/train-objectives-controller.js',
+					'js/app/controller/user-controller.js',
+					'js/app/controller/issues-category-management-controller.js',
+					'js/app/controller/announcements-controller.js',
+					'js/app/controller/address-management-controller.js',
+					'js/app/controller/view-fault-controller.js',
+					'js/app/controller/view-issue-controller.js',
+					'js/app/controller/error-controller.js',
+					'js/app/controller/not-authorised-controller.js',
+					'js/app/controller/momentum-staff-controller.js',
+					'js/app/controller/meal.js',
+					'js/app/controller/meal-details.js',
+          'js/app/controller/cleaning-controller.js',
+					'js/app/controller/view-cleaning-controller.js',
+					'js/app/controller/tickets-controller.js',
+				];
+
+				var filters = [
+					'js/app/filter/num.js'
+				];
+
+				var directives = [
+					'js/app/directives/form-select.js',
+					'js/app/directives/pagination.js'
+				];
+
+				var others = [
+					'js/vendor/custom.modernizr.js',
+					'js/foundation/foundation-debug.js',
+					'js/foundation/foundation-datepicker.js',
+					'js/vendor/respond.min.js'
+				];
+
+				var merged = vendors.concat(app)
+						.concat(services)
+						.concat(controllers)
+						.concat(directives)
+						.concat(filters)
+						.concat(others);
+
+				for (var i in merged) {
+					//<!--
+					document.write('<script src="' + merged[i] + '?v=' + v + '"><\/script>');
+					//-->
+				}
+			})();
+		</script>
+	</body>
+</html>

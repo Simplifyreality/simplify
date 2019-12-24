@@ -1,0 +1,55 @@
+<header>
+	<div class="row">
+		<div class="small-12 medium-12 large-12 columns">
+			<h1>Welcome to TMA-Web <span ng-show="iTMVersion" class="version">v{{ iTMVersion }}</span></h1>
+		</div>
+	</div>
+</header>
+<div class="row mt-15" ng-show="userGroup == 'EUROSTAR'">
+	<ul class="small-block-grid-2 medium-block-grid-2 large-block-grid-2">
+		<li>
+			<div class="panel">
+				<strong>If you are OBSM you can:</strong>
+				<ul class="disc">
+					<li>Read journey logs, filter them according to your needs and export the data in JOURNEY LOGS,</li>
+					<li>Concentrate on issues reported in journey logs and filter and export the data in ISSUES,</li>
+					<li>Send messages to one or several trains, live or in advance, view and participate in live chats with the TMs, in E-MESSAGES,</li>
+					<li>Read about faults as they get reported in CARNET DE BORD,</li>
+					<li>Write, manage and send temporary announcements to the relevant trains in SPECIALS,</li>
+					<li>Create, manage and send train objectives in TRAIN OBJECTIVES,</li>
+					<li>Manage user accounts, view personalised announcements and reset passwords in ADMIN,</li>
+					<li>Review and change standard announcements in ADMIN.</li>
+				</ul>
+			</div>
+		</li>
+		<li>
+			<div class="panel">
+				<strong>If you are CRE you can:</strong>
+				<ul class="disc">
+					<li>Send messages to one or several trains, live or in advance, receive notifications of Dépêches, view and participate in live chats with the TMs, in E-MESSAGES,</li>
+					<li>Read about faults as they are being reported in CARNET DE BORD,</li>
+					<li>Read journey logs, filter them according to your needs and export the data in JOURNEY LOGS,</li>
+					<li>concentrate on issues reported in journey logs and filter and export the data in ISSUES.</li>
+				</ul>
+			</div>
+		</li>
+		<li>
+			<div class="panel">
+				<strong>If you are Depot you can:</strong>
+				<ul class="disc">
+					<li>Read about faults as they get reported, sort and filter them according to your needs, assign a status and comment on them in CARNET DE BORD.</li>
+				</ul>
+			</div>
+		</li>
+		<li>
+			<div class="panel">
+				<strong>If you are admin you can:</strong>
+				<ul class="disc">
+					<li>Read journey logs, filter them according to your needs and export the data in JOURNEY LOGS,</li>
+					<li>Concentrate on issues reported in journey logs and filter and export the data in ISSUES,</li>
+					<li>Read about faults as they get reported in CARNET DE BORD.</li>
+				</ul>
+			</div>
+		</li>
+	</ul>
+</div>

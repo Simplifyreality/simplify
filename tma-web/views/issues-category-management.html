@@ -1,0 +1,133 @@
+<header ng-init="list()">
+	<div class="row mb-15">
+		<div class="small-12 medium-12 large-12 columns">
+			<h1 class="left mr-20" translate="issuesCategoryManagement.title"></h1>
+			<span class="left"><a href=""  ng-click="newIssueCategory()" class="button radius mr-8"><i class="fa fa-plus"></i> {{'issuesCategoryManagement.addCategory' | translate}}</a></span>
+		</div>
+	</div>
+</header>
+
+<div class="alert-box success mt-15 mb-15" ng-show="issueCategoryAdded" translate="issuesCategoryManagement.created">
+</div>
+<div class="alert-box success mt-15 mb-15" ng-show="issueCategoryUpdated" translate="issuesCategoryManagement.updated">
+</div>
+
+<!-- Start Category and subcategories -->
+<div class="issue-category-family" ng-repeat="cat in categories">
+	<div class="row">
+		<div class="small-12 medium-12 large-12 columns">
+			<header>
+				<div class="row">
+					<div class="small-8 medium-9 large-10 columns flexbox-va">
+						<h2 class="issues-header mr-20">{{cat.title_en}}, {{cat.title_fr}}</h2>
+						<a href="" ng-click="editCategory(cat)" class="button radius margin-reset"><i class="fa fa-pencil"></i> {{'issuesCategoryManagement.edit' | translate}}</a>
+						<a href=""  class="button radius ml-8" ng-click="hideCategory(cat)" ng-show="!cat.deleted"><i class="fa fa-times"></i> {{'issuesCategoryManagement.deleteCategory' | translate}}</a>
+						<a href=""  class="button radius ml-8" ng-click="showCategory(cat)" ng-show="cat.deleted"><i class="fa fa-times"></i> {{'issuesCategoryManagement.unDeleteCategory' | translate}}</a>
+					</div>
+				</div>
+			</header>
+
+			<table class="mt-15" width="100%">
+				<thead>
+					<th translate="issuesCategoryManagement.table.subcategories"></th>
+					<th></th>
+				</thead>
+				<tbody>
+					<tr ng-repeat="sub in cat.subCategories">
+						<td>{{sub.title_en}}, {{sub.title_fr}}</td>
+						<td>
+							<a href=""  class="button radius small right margin-reset" ng-click="hideCategory(cat, sub)" ng-show="!sub.deleted"><i class="fa fa-times"></i> {{'issuesCategoryManagement.deleteSubcategory' | translate}}</a>
+							<a href=""  class="button radius small right margin-reset" ng-click="showCategory(cat, sub)" ng-show="sub.deleted"><i class="fa fa-times"></i> {{'issuesCategoryManagement.unDeleteSubcategory' | translate}}</a>
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+	</div>
+</div>
+<!-- End Category and subcategories -->
+
+<!-- Start Add Issues Category lightbox -->
+<div id="issueCategoryModal" class="reveal-modal medium">
+	<h2 class="modal-header" translate="issuesCategoryManagement.modal.addNewCategory" ng-show="issueCategoryModal.isNewIssueCategory"></h2>
+	<h2 class="modal-header" translate="issuesCategoryManagement.modal.editCategory" ng-show="!issueCategoryModal.isNewIssueCategory"></h2>
+	<form class="custom">
+		<div class="alert-box alert" ng-show="issueCategoryModal.isValidationError">
+			<div translate="admin.users.modal.validationError"></div>
+		</div>
+		<div class="alert-box alert" ng-show="issueCategoryModal.isGenericError">
+			<span translate="admin.users.modal.genericError"></span>
+		</div>
+		<div class="row mt-15">
+			<div class="small-12 medium-12 large-12 columns">
+
+				<!-- Start category details -->
+				<div class="row flexbox-va">
+					<div class="small-2 medium-2 large-2 columns">
+						<label for="category-name-english">{{'issuesCategoryManagement.modal.categoryName.english' | translate}}</label>
+					</div>
+					<div class="small-4 medium-4 large-3 columns" ng-class="{error: issueCategoryModal.errors.title_en}">
+						<input type="text" id="category-name-english" ng-model="issueCategoryModal.category.title_en" placeholder="{{'issuesCategoryManagement.modal.categoryName.english.placeholder' | translate}}">
+						<small ng-show="issueCategoryModal.errors.title_en">{{issueCategoryModal.errors.title_en | translate}}</small>
+					</div>
+					<div class="small-2 medium-2 large-2 columns">
+						<label for="category-name-french" class="right">{{'issuesCategoryManagement.modal.categoryName.french' | translate}}</label>
+					</div>
+					<div class="small-4 medium-4 large-3 columns" ng-class="{error: issueCategoryModal.errors.title_fr}">
+						<input type="text" id="category-name-french" ng-model="issueCategoryModal.category.title_fr" placeholder="{{'issuesCategoryManagement.modal.categoryName.french.placeholder' | translate}}">
+						<small ng-show="issueCategoryModal.errors.title_fr">{{issueCategoryModal.errors.title_fr | translate}}</small>
+					</div>
+				</div>
+				<!-- End category details -->
+
+				<div class="mt-15">
+					<div class="row flexbox-va">
+						<div class="small-8 medium-9 large-9 columns">
+							<header>
+								<strong>{{'issuesCategoryManagement.modal.subcategories' | translate}}</strong>
+							</header>
+						</div>
+						<div class="small-4 medium-3 large-3 columns">
+							<a href="" class="button radius right margin-reset" ng-click="addSubCategory()"><i class="fa fa-plus"></i> {{'issuesCategoryManagement.modal.addSubcategory' | translate}}</a>
+						</div>
+					</div>
+				</div>
+
+				<!-- Start subcategory details -->
+				<div class="subcategory-details mt-15" ng-repeat="sub in issueCategoryModal.subCategories track by $index">
+					<div class="row flexbox-va">
+						<div class="small-2 medium-2 large-2 columns">
+							<label for="subcategory-english-{{$index}}">{{'issuesCategoryManagement.modal.subcategory.english' | translate}}</label>
+						</div>
+						<div class="small-3 medium-3 large-3 columns" ng-class="{error: (issueCategoryModal.errors['subCategories[' + $index + '].title_en'])}">
+							<input id="subcategory-english-{{$index}}" type="text" ng-model="issueCategoryModal.subCategories[$index].title_en" placeholder="{{'issuesCategoryManagement.modal.subcategory.english.placeholder' | translate}}">
+							<small ng-show="(issueCategoryModal.errors['subCategories[' + $index + '].title_en'])">{{"issueCategoryManagement.errors.subcategory.title_en" | translate}}</small>
+						</div>
+						<div class="small-2 medium-2 large-2 columns">
+							<label for="subcategory-french-{{$index}}" class="right">{{'issuesCategoryManagement.modal.subcategory.french' | translate}}</label>
+						</div>
+						<div class="small-3 medium-3 large-3 columns" ng-class="{error: (issueCategoryModal.errors['subCategories[' + $index + '].title_fr'])}">
+							<input id="subcategory-french-{{$index}}" type="text" ng-model="issueCategoryModal.subCategories[$index].title_fr" placeholder="{{'issuesCategoryManagement.modal.subcategory.french.placeholder' | translate}}">
+							<small ng-show="(issueCategoryModal.errors['subCategories[' + $index + '].title_fr'])">{{"issueCategoryManagement.errors.subcategory.title_fr" | translate}}</small>
+						</div>
+						<div class="small-2 medium-2 large-2 columns" ng-show="sub.id === undefined">
+							<a href="" class="button radius right margin-reset" ng-click="removeSubCategory($index)"><i class="fa fa-times"></i> {{'issuesCategoryManagement.modal.remove' | translate}}</a>
+						</div>
+					</div>
+				</div>
+				<!-- End subcategory details -->
+
+			</div>
+		</div>
+
+		<div class="row modal-action-buttons flexbox-h-end">
+			<div class="small-12 medium-12 large-12 columns">
+				<span class="right"><a href="" class="button cancel radius small left mr-8" translate="issuesCategoryManagement.modal.cancel" ng-click="cancelModal()"></a>
+				<a href="" class="button radius small margin-reset" translate="issuesCategoryManagement.modal.save" ng-click="saveCategory()"></a></span>
+			</div>
+		</div>
+
+	</form>	
+	<a class="close-reveal-modal">&#215;</a>
+</div>
+<!-- End Add Issues Category lightbox -->

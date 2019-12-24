@@ -1,0 +1,103 @@
+.checkbox-label {
+	padding: 3px 0 0 0;
+}
+
+
+/* Form element styles */
+input[type="text"],
+input[type="password"],
+input[type="date"],
+input[type="datetime"],
+input[type="datetime-local"],
+input[type="month"],
+input[type="week"],
+input[type="email"],
+input[type="number"],
+input[type="search"],
+input[type="tel"],
+input[type="time"],
+input[type="url"],
+textarea {
+	margin: 0;
+	color: $darkGrey !important;
+}
+
+select, select option {
+    color: $darkGrey !important;
+}
+
+input[type="checkbox"] {
+	margin: 0 0 8px 0;
+}
+
+.browse-file-input {
+	border: 1px solid $mediumGrey;
+	color: $mediumGrey;
+	padding: 4px;
+}
+
+/* Button styles */
+button, .button {
+	box-shadow: none;
+	background-color: $lightTurquoise;
+	border: 1px solid $turquoiseBlue;
+	color: $turquoiseBlue;
+	font-size: emCalc(12);
+	padding: 0.6em 0.8em;
+
+	&.radius {
+		border-radius: 8px;
+	}
+
+	&.cancel {
+		background-color: $offWhite;
+		color: $charcoalGrey;
+		border: 1px solid $lightGrey;
+	}
+
+	&.disabled {
+		background-color: $lightGrey;
+		color: $mediumGrey;
+		border: 1px solid $lightGrey;
+	}
+}
+
+button:hover, button:focus, .button:hover, .button:focus {
+  background-color: $lightBlue;
+
+  &.cancel {
+  	background-color: $offWhite;
+  	color: $charcoalGrey;
+  }
+
+  &.disabled {
+		background-color: $lightGrey;
+		color: $mediumGrey;
+	}}
+
+
+.link, .link:hover, .link.focus {
+	background-color: $white;
+	padding: 0;
+	margin: 0;
+	color: $turquoiseBlue;
+	box-shadow: none;
+	border: none;
+	transition-property: none;
+	font-size: emCalc(16);
+	font-weight: normal;
+
+	&:hover, &:hover {
+		color: $lightBlue;
+	}
+}
+
+.alert-box {
+	&.warning {
+		background-color: $amber;
+	}
+}
+
+textarea#emessage {
+  height: 100px;
+}

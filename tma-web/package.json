@@ -1,0 +1,25 @@
+{
+  "name": "Eurostar",
+  "description": "Eurostar",
+  "version": "0.0.1",
+  "private": true,
+  "dependencies": {
+    "gulp-es6-module-transpiler": "^0.2.1",
+    "gulp-flatten": "0.0.4",
+    "gulp-if": "^1.2.5",
+    "gulp-ng-annotate": "^0.5.2",
+    "ng-annotate": "^0.15.4",
+    "yargs": "^3.6.0"
+  },
+  "devDependencies": {
+    "express": "^4.13.3",
+    "http-proxy": "^1.15.2"
+  },
+  "engines": {
+    "node": ">=7.1.0"
+  },
+  "subdomain": "undefined-eurostar",
+  "scripts": {
+    "start": "node server.js"
+  }
+}

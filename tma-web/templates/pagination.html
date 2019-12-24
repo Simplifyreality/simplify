@@ -1,0 +1,15 @@
+<div class="pagination-left" >
+  <ul class="pagination">
+    <!-- <li class="arrow" ng-class="{unavailable: content.number == 0}"><a href="" ng-click="list(content.number - 1)">&laquo;</a></li>
+    <li ng-class="{current: content.number == p}" ng-click="list(content.number - 1)"><a href="">p</a></li>
+    <li class="unavailable"><a href="">&hellip;</a></li>
+    <li><a href="">12</a></li>
+    <li><a href="">13</a></li>
+    <li class="arrow"><a href="">&raquo;</a></li> -->
+		<li class="arrow unavailable" ng-show="!previousPage"><a href="" ng-click="">&laquo;</a></li>
+		<li class="arrow" ng-show="previousPage"><a href="" ng-click="callback(previousPage.page)">&laquo;</a></li>
+		<li ng-repeat="p in pages" ng-class="{current: p.current}"><a href="" ng-click="callback(p.page - 1)">{{p.page}}</li>
+		<li class="arrow" ng-show="nextPage"><a href="" ng-click="callback(nextPage.page)">&raquo;</a></li>
+		<li class="arrow unavailable" ng-show="!nextPage"><a href="" ng-click="">&raquo;</a></li>
+  </ul>
+</div>

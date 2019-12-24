@@ -1,0 +1,109 @@
+body {
+	font-family: $ArialRegular;
+	color: $darkGrey;
+}
+
+a {
+	color: $turquoiseBlue;
+}
+
+a:hover {
+	color: $lightBlue;
+}
+
+.top-bar {
+	.name {
+		.page-title {
+			font-size: emCalc(23);
+			color: $lightGrey;
+		}
+	}
+}
+
+h1, h2, h3, h4, h5, h6 {
+	font-weight: $header-font-weight;
+	font-family: $ArialRegular;
+	line-height: 1;
+}
+
+h1 {
+	font-size: emCalc(32);
+	margin: 0 0 10px 0;
+	color: $darkGrey;	
+	.version {
+		font-size: 12pt;
+		opacity: .5;
+	}
+}
+
+.modal-header {
+	font-size: emCalc(26);
+}
+
+.filter-heading {
+	font-size: emCalc(18);
+}
+
+/* journey logs styles */
+.train-number {
+	font-size: emCalc(27);
+	color: $darkGrey;
+	margin: 0;
+}
+
+.train-details {
+	color: $mediumGrey;
+	font-size: emCalc(18);
+	margin: 0;
+}
+
+.journey-logs-header {
+	font-size: emCalc(22);
+}
+
+.journey-logs-subheader {
+	font-size: emCalc(16);
+	color: $darkGrey;
+	font-weight: bold;
+}
+
+/* accordion-list styles */
+.accordion-header {
+	font-size: emCalc(20);
+	color: $darkGrey;
+	font-weight: normal;
+}
+
+.accordion-subheader {
+	font-size: emCalc(17);
+	color: $darkGrey;
+}
+
+/* user announcements */
+.user-announcement-title {
+	color: $darkGrey;
+	font-size: emCalc(15);
+	font-weight: bold;
+}
+
+.user-announcement-text, .accordion-text {
+	font-size: emCalc(14);
+}
+
+.user-announcement-details {
+	font-size: emCalc(13);
+}
+
+/* depot faults and issues */
+
+.faults-header, .issues-header, .user-announcement-username {
+	font-size: emCalc(18);
+	color: $darkGrey;
+	font-weight: bold;
+}
+
+.faults-subheader, .issues-subheader {
+	font-size: emCalc(16);
+	color: $darkGrey;
+	font-weight: bold;
+}

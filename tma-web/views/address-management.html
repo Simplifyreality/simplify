@@ -1,0 +1,375 @@
+<header class="row flexbox-va">
+	<div class="small-12 medium-12 large-12 columns">
+		<h1 class="left mr-20" translate="addressManagement.title"></h1>
+		<span class="left">
+			<a href="" class="button radius small margin-reset" ng-click="newAddress()" ng-show="canAddAddress">
+				<i class="fa fa-plus"></i> {{'addressManagement.addAddress' | translate}}
+			</a>
+		</span>
+	</div>
+</header>
+
+<div class="alert-box success mt-15" ng-show="addressAdded" translate="addressManagement.created">
+</div>
+<div class="alert-box success mt-15" ng-show="addressUpdated" translate="addressManagement.updated">
+</div>
+
+<div class="row mt-15" ng-init="list()">
+	<div class="small-12 medium-12 large-12 large-centered columns">
+		<div class="section-container tabs" data-section="tabs" ng-init="tab = tab == null ? 'ISSUES' : tab">
+			<section ng-class="{active: tab == 'ISSUES'}">
+				<p class="title"><a ng-click="changeTab('ISSUES')">{{'addressManagement.issues' | translate}}</a></p>
+			</section>
+			<section ng-class="{active: tab == 'FAULT'}">
+				<p class="title"><a ng-click="changeTab('FAULT')">{{'addressManagement.faults' | translate}}</a></p>
+			</section>
+			<section ng-class="{active: tab == 'SAFETY'}">
+				<p class="title"><a ng-click="changeTab('SAFETY')">{{'addressManagement.safety' | translate}}</a></p>
+			</section>
+			<section ng-class="{active: tab == 'SPECIAL_REQUIREMENTS'}">
+				<p class="title"><a ng-click="changeTab('SPECIAL_REQUIREMENTS')">{{'addressManagement.specialRequirements' | translate}}</a></p>
+			</section>
+			<section ng-class="{active: tab == 'TAXI_OPERATORS'}">
+				<p class="title"><a ng-click="changeTab('TAXI_OPERATORS')">{{'addressManagement.taxiOperators' | translate}}</a></p>
+			</section>
+			<section ng-class="{active: tab == 'HOTELS'}">
+				<p class="title"><a ng-click="changeTab('HOTELS')">{{'addressManagement.hotels' | translate}}</a></p>
+			</section>
+			<section ng-class="{active: tab == 'NO_SHOW'}">
+				<p class="title"><a ng-click="changeTab('NO_SHOW')">{{'addressManagement.noShows' | translate}}</a></p>
+			</section>
+		</div>
+
+		<div class="tabs">
+			<div class="content" ng-show="tab == 'ISSUES'">
+				<table width="100%" class="mt-15">
+					<thead>
+						<tr>
+							<th translate="addressManagement.table.category"></th>
+							<th translate="addressManagement.table.subcategory"></th>
+							<th translate="addressManagement.table.addresses"></th>
+							<th translate="addressManagement.table.edit"></th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr ng-repeat="a in addresses">
+							<td>{{categories[a.category].title_en}}</td>
+							<td>{{subCategories[a.subCategory].title_en}}</td>
+							<td>
+								<ul class="no-bullet">
+									<li ng-repeat="email in a.addresses track by $index">{{email}}</li>
+								</ul>
+							</td>
+							<td>
+								<a href="" ng-click="editAddress(a)" class="button radius small margin-reset">
+									<i class="fa fa-pencil hide-for-small"></i> {{'addressManagement.editAddress' | translate}}</a>
+							</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+
+			<div class="content" ng-show="tab == 'FAULT'">
+				<table width="100%" class="mt-15">
+					<thead>
+					<tr>
+						<th translate="addressManagement.table.category"></th>
+						<th translate="addressManagement.table.subcategory"></th>
+						<th translate="addressManagement.table.addresses"></th>
+						<th translate="addressManagement.table.edit"></th>
+					</tr>
+					</thead>
+					<tbody>
+					<tr ng-repeat="a in addresses">
+						<td>{{faultCategories[a.category].title_en}}</td>
+						<td>{{faultSubCategories[a.subCategory].title_en}}</td>
+						<td>
+							<ul class="no-bullet">
+								<li ng-repeat="email in a.addresses track by $index">{{email}}</li>
+							</ul>
+						</td>
+						<td>
+							<a href="" ng-click="editAddress(a)" class="button radius small margin-reset">
+								<i class="fa fa-pencil hide-for-small"></i> {{'addressManagement.editAddress' | translate}}</a>
+						</td>
+					</tr>
+					</tbody>
+				</table>
+			</div>
+
+			<div class="content" ng-show="tab == 'SAFETY'">
+				<table width="100%" class="mt-15">
+					<thead>
+						<tr>
+							<th translate="addressManagement.table.category"></th>
+							<th translate="addressManagement.table.addresses"></th>
+							<th translate="addressManagement.table.edit"></th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr ng-repeat="a in addresses">
+							<td>{{("addressManagement.safety." + a.category) | translate}}</td>
+							<td>
+								<ul class="no-bullet">
+									<li ng-repeat="email in a.addresses track by $index">{{email}}</li>
+								</ul>
+							</td>
+							<td>
+								<a href="" ng-click="editAddress(a)" class="button radius small margin-reset">
+									<i class="fa fa-pencil hide-for-small"></i> {{'addressManagement.editAddress' | translate}}</a>
+							</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+
+			<div class="content" ng-show="tab == 'SPECIAL_REQUIREMENTS'">
+				<table width="100%" class="mt-15">
+					<thead>
+						<tr>
+							<th translate="addressManagement.table.category"></th>
+							<th translate="addressManagement.table.addresses"></th>
+							<th translate="addressManagement.table.edit"></th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr ng-repeat="a in addresses">
+							<td>{{'addressManagement.specialRequirements' | translate}}</td>
+							<td>
+								<ul class="no-bullet">
+									<li ng-repeat="email in a.addresses track by $index">{{email}}</li>
+								</ul>
+							</td>
+							<td>
+								<a href="" ng-click="editAddress(a)" class="button radius small margin-reset">
+									<i class="fa fa-pencil hide-for-small"></i> {{'addressManagement.editAddress' | translate}}</a>
+							</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+
+			<div class="content" ng-show="tab == 'TAXI_OPERATORS'">
+				<table width="100%" class="mt-15">
+					<thead>
+						<th translate="addressManagement.table.category"></th>
+						<th translate="addressManagement.table.addresses"></th>
+						<th translate="addressManagement.table.edit"></th>
+					</thead>
+					<tbody>
+						<tr ng-repeat="a in addresses">
+							<td>{{("addressManagement.destination." + a.category) | translate}}</td>
+							<td>
+								<ul class="no-bullet">
+									<li ng-repeat="email in a.addresses track by $index">{{email}}</li>
+								</ul>
+							</td>
+							<td>
+								<a href="" ng-click="editAddress(a)" class="button radius small margin-reset">
+									<i class="fa fa-pencil hide-for-small"></i> {{'addressManagement.editAddress' | translate}}</a>
+							</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+
+			<div class="content" ng-show="tab == 'HOTELS'">
+				<table width="100%" class="mt-15">
+					<thead>
+					<th translate="addressManagement.table.category"></th>
+					<th translate="addressManagement.table.addresses"></th>
+					<th translate="addressManagement.table.edit"></th>
+					</thead>
+					<tbody>
+					<tr ng-repeat="a in addresses">
+						<td>{{("addressManagement.destination." + a.category) | translate}}</td>
+						<td>
+							<ul class="no-bullet">
+								<li ng-repeat="email in a.addresses track by $index">{{email}}</li>
+							</ul>
+						</td>
+						<td>
+							<a href="" ng-click="editAddress(a)" class="button radius small margin-reset">
+								<i class="fa fa-pencil hide-for-small"></i> {{'addressManagement.editAddress' | translate}}</a>
+						</td>
+					</tr>
+					</tbody>
+				</table>
+			</div>
+
+			<div class="content" ng-show="tab == 'NO_SHOW'">
+				<table width="100%" class="mt-15">
+					<thead>
+					<tr>
+						<th translate="addressManagement.table.category"></th>
+						<th translate="addressManagement.table.addresses"></th>
+						<th translate="addressManagement.table.edit"></th>
+					</tr>
+					</thead>
+					<tbody>
+					<tr ng-repeat="a in addresses">
+						<td>{{'addressManagement.noShows' | translate}}</td>
+						<td>
+							<ul class="no-bullet">
+								<li ng-repeat="email in a.addresses track by $index">{{email}}</li>
+							</ul>
+						</td>
+						<td>
+							<a href="" ng-click="editAddress(a)" class="button radius small margin-reset">
+								<i class="fa fa-pencil hide-for-small"></i> {{'addressManagement.editAddress' | translate}}</a>
+						</td>
+					</tr>
+					</tbody>
+				</table>
+			</div>
+		</div>
+
+	</div>
+</div>
+
+<!-- Start Edit Address lightbox -->
+<div id="addressManagementModal" class="reveal-modal medium">
+	<form class="custom">
+		<div class="alert-box alert" ng-show="addressManagementModal.isValidationError">
+			<div translate="admin.users.modal.validationError"></div>
+		</div>
+		<div class="alert-box alert" ng-show="addressManagementModal.isGenericError">
+			<span translate="admin.users.modal.genericError"></span>
+		</div>
+		<div class="row mt-15">
+			<div class="small-12 medium-12 large-12 columns">
+
+				<div class="row flexbox-va">
+					<div class="small-9 medium-9 large-9 columns" ng-show="!addressManagementModal.isNewAddress" ng-switch="tab">
+						<h5 ng-switch-when="ISSUES">{{'addressManagement.activeAddresses.for.title' | translate}} {{categories[addressManagementModal.address.category].title_en}} &gt; {{subCategories[addressManagementModal.address.subCategory].title_en}}</h5>
+						<h5 ng-switch-when="FAULT">{{'addressManagement.activeAddresses.for.title' | translate}} {{faultCategories[addressManagementModal.address.category].title_en}} &gt; {{faultSubCategories[addressManagementModal.address.subCategory].title_en}}</h5>
+						<h5 ng-switch-when="SPECIAL_REQUIREMENTS">{{'addressManagement.specialRequirements' | translate}}</h5>
+						<h5 ng-switch-default>{{'addressManagement.activeAddresses.for.title' | translate}} {{addressManagementModal.address.category}} </h5>
+					</div>
+					<div class="small-9 medium-9 large-9 columns" ng-show="addressManagementModal.isNewAddress">
+						<div class="row" ng-switch="tab">
+							<div ng-switch-when="ISSUES">
+								<div class="small-6 medium-6 large-6 columns">
+									<div class="row">
+										<div class="small-12 medium-12 large-3 columns">
+											<label for="selectedCategory" translate="addressManagement.selectCategories"></label>
+										</div>
+										<div class="small-12 medium-12 large-9 columns" ng-class="{'error': addressManagementModal.errors.category}">
+											<div form-select id="selectedCategory" name="selectedCategory" select-values="addressManagementModal.categories" ng-model="addressManagementModal.address.category"></div>
+											<small ng-show="addressManagementModal.errors.category">{{addressManagementModal.errors.category | translate}}</small>
+										</div>
+									</div>
+								</div>
+								<div class="small-6 medium-6 large-6 columns">
+									<div class="row">
+										<div class="small-12 medium-12 large-3 columns">
+											<label for="selectedSubCategory" translate="addressManagement.selectSubCategories"></label>
+										</div>
+										<div class="small-12 medium-12 large-9 columns" ng-class="{'error': addressManagementModal.errors.subCategory}">
+											<div form-select id="selectedSubCategory" name="selectedSubCategory" select-values="addressManagementModal.subCategories" ng-model="addressManagementModal.address.subCategory"></div>
+											<small ng-show="addressManagementModal.errors.subCategory">{{addressManagementModal.errors.subCategory | translate}}</small>
+										</div>
+									</div>
+								</div>
+							</div>
+							<div ng-switch-when="FAULT">
+								<div class="small-6 medium-6 large-6 columns">
+									<div class="row">
+										<div class="small-12 medium-12 large-3 columns">
+											<label for="selectedFaultCategory" translate="addressManagement.selectCategories"></label>
+										</div>
+										<div class="small-12 medium-12 large-9 columns" ng-class="{'error': addressManagementModal.errors.category}">
+											<div form-select id="selectedFaultCategory" name="selectedCategory" select-values="addressManagementModal.faultCategories" ng-model="addressManagementModal.address.category"></div>
+											<small ng-show="addressManagementModal.errors.category">{{addressManagementModal.errors.category | translate}}</small>
+										</div>
+									</div>
+								</div>
+								<div class="small-6 medium-6 large-6 columns">
+									<div class="row">
+										<div class="small-12 medium-12 large-3 columns">
+											<label for="selectedFaultSubCategory" translate="addressManagement.selectSubCategories"></label>
+										</div>
+										<div class="small-12 medium-12 large-9 columns" ng-class="{'error': addressManagementModal.errors.subCategory}">
+											<div form-select id="selectedFaultSubCategory" name="selectedSubCategory" select-values="addressManagementModal.faultSubCategories" ng-model="addressManagementModal.address.subCategory"></div>
+											<small ng-show="addressManagementModal.errors.subCategory">{{addressManagementModal.errors.subCategory | translate}}</small>
+										</div>
+									</div>
+								</div>
+							</div>
+							<div ng-switch-when="SAFETY">
+								<div class="small-2 medium-2 large-1 columns">
+										<label for="selectedSafetyCategory" class="inline" translate="addressManagement.selectCategories"></label>
+									</div>
+									<div class="small-10 medium-10 large-11 columns" ng-class="{'error': addressManagementModal.errors.category}">
+										<div form-select id="selectedSafetyCategory" name="selectedCategory" select-values="safety" ng-model="addressManagementModal.address.category"></div>
+										<small ng-show="addressManagementModal.errors.category">{{addressManagementModal.errors.category | translate}}</small>
+									</div>
+							</div>
+							<div ng-switch-when="SPECIAL_REQUIREMENTS">
+								<h5>{{'addressManagement.specialRequirements' | translate}}</h5>
+								<input type="hidden" ng-model="addressManagementModal.address.category" value="SPECIAL_REQUIREMENT" />
+							</div>
+							<div ng-switch-when="TAXI_OPERATORS">
+								<div class="row">
+									<div class="small-2 medium-2 large-1 columns">
+										<label for="selectedTaxiCategory" class="inline" translate="addressManagement.selectCategories"></label>
+									</div>
+									<div class="small-10 medium-10 large-11 columns" ng-class="{'error': addressManagementModal.errors.category}">
+										<div form-select id="selectedTaxiCategory" name="selectedCategory" select-values="taxiOperators" ng-model="addressManagementModal.address.category"></div>
+										<small ng-show="addressManagementModal.errors.category">{{addressManagementModal.errors.category | translate}}</small>
+									</div>
+								</div>
+							</div>
+							<div ng-switch-when="HOTELS">
+								<div class="row">
+									<div class="small-2 medium-2 large-1 columns">
+										<label for="selectedHotelCategory" class="inline" translate="addressManagement.selectCategories"></label>
+									</div>
+									<div class="small-10 medium-10 large-11 columns" ng-class="{'error': addressManagementModal.errors.category}">
+										<div form-select id="selectedHotelCategory" name="selectedCategory" select-values="hotels" ng-model="addressManagementModal.address.category"></div>
+										<small ng-show="addressManagementModal.errors.category">{{addressManagementModal.errors.category | translate}}</small>
+									</div>
+								</div>
+							</div>
+							<div ng-switch-when="NO_SHOW">
+								<h5>{{'addressManagement.noShows' | translate}}</h5>
+								<input type="hidden" ng-model="addressManagementModal.address.category" value="NO_SHOW" />
+							</div>
+						</div>
+					</div>
+					<div class="small-3 medium-3 large-3 columns">
+						<div class="row">
+							<a href="" class="button radius right" ng-click="addEmailAddress()"><i class="fa fa-plus"></i> {{'addressManagement.modal.addRecipient' | translate}}</a>
+						</div>
+					</div>
+				</div>
+				<div class="alert-box alert" ng-show="addressManagementModal.errors.addresses">{{addressManagementModal.errors.addresses | translate}}</div>
+				<div class="address-details mt-15" ng-repeat="email in addressManagementModal.address.addresses track by $index">
+					<div class="row">
+						<div class="small-2 medium-2 large-1 columns">
+							<label for="email-address_{{$index}}" class="inline"  translate="addressManagement.email"></label>
+						</div>
+						<div class="small-8 medium-7 large-9 columns" ng-class="{'error': (addressManagementModal.errors['addresses[' + $index + ']'])}">
+							<input type="text" id="email-address_{{$index}}" placeholder="{{'addressManagement.email.placeholder' | translate}}" ng-model="addressManagementModal.address.addresses[$index]">
+							<small ng-show="(addressManagementModal.errors['addresses[' + $index + ']'])">{{'addressManagement.errors.validEmail' | translate}}</small>
+						</div>
+						<div class="small-2 medium-3 large-2 columns">
+							<a href="" class="button radius small right mr-8" ng-show="addressManagementModal.address.addresses.length > 1" ng-click="removeEmailAddress($index)"><i class="fa fa-times"></i> {{'addressManagement.modal.remove' | translate}}</a>
+						</div>
+					</div>
+				</div>
+
+			</div>
+		</div>
+
+		<div class="row modal-action-buttons flexbox-h-end">
+			<div class="small-12 medium-12 large-12 columns">
+				<span class="right"><a href="" class="button cancel radius small left mr-8" translate="addressManagement.modal.cancel" ng-click="cancelModal()"></a>
+				<a href="" class="button radius small margin-reset" translate="addressManagement.modal.save" ng-click="saveAddress()"></a></span>
+			</div>
+		</div>
+		
+	</form>	
+	<a class="close-reveal-modal">&#215;</a>
+</div>
+<!-- End Edit Address lightbox -->

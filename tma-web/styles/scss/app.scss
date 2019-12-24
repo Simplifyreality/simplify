@@ -1,0 +1,157 @@
+// foundation
+@import 'foundation/normalize';
+@import 'foundation/foundation';
+// import columnfix for IE8 and below
+//@import "custom/ie8-columnfix";
+
+// custom
+@import 'custom/main';
+
+
+.eurostar {
+  visibility: hidden;
+  &.eurostar_hide {
+    display: block;
+    visibility: visible;
+  }
+  &.monument_hide {
+    display: none;
+  }
+}
+
+.monument {
+  visibility: hidden;
+  &.monument_hide {
+    display: block;
+    visibility: visible;
+  }
+  &.eurostar_hide {
+    display: none;
+  }
+}
+
+.boarding-title {
+  width: 670px;
+  border: 1px solid #ccc;
+  border-bottom: 0 none;
+  margin-left: 20px;
+  margin-top: 20px;
+  &.euro {
+    width: 446px;
+  }
+
+  & > div {
+    width: 70px;
+    display: inline-block;
+    text-align: center;
+    font-size: 13px;
+    line-height: 18px;
+    padding-bottom: 20px;
+    border-left: 1px solid #ccc;
+    height: 61px;
+    vertical-align: middle;
+    padding-top: 5px;
+    &:first-child {
+      border-left: 0 none;
+    }
+  }
+}
+
+.boarding {
+  width: 670px;
+  border: 1px solid #ccc;
+  margin-left: 20px;
+  .set {
+    font-size: 15px;
+    line-height: 18px;
+    width: 597px;
+    display: inline-block;
+
+    .first {
+      border-bottom: 1px solid #ccc;
+      border-right: 1px solid #ccc;
+    }
+
+    .last {
+      border-right: 1px solid #ccc;
+    }
+
+    .first, .last {
+      .info {
+        & > div {
+          & > div {
+            border-bottom: 1px solid #ccc;
+          }
+          &:last-child > div {
+            border-bottom: 0 none;
+          }
+        }
+      }
+      & > .info div > div {
+        float: left;
+        width: 74.5px;
+        text-align: center;
+        padding: 5px 0;
+        border-left: 1px solid #ccc;
+      }
+    }
+
+    .first .fist-name, .last .fist-name, .total {
+      width: 70px;
+      display: inline-block;
+      padding: 5px 0;
+      vertical-align: top;
+      text-align: center;
+    }
+  }
+
+  .info {
+    display: inline-block;
+    border-right: 1px solid #ccc;
+    margin-bottom: -4px;
+  }
+
+  .total-info {
+    width: 66px;
+    display: inline-block;
+    vertical-align: top;
+    text-align: center;
+    padding: 5px 0;
+  }
+
+  &.euro {
+    width: 446px;
+    .set {
+      width: 445px;
+    }
+  }
+}
+
+.boarding-total {
+  display: inline-block;
+  vertical-align: top;
+  width: 66px;
+  text-align: center;
+  font-size: 15px;
+  line-height: 18px;
+  padding: 5px 0;
+}
+
+.row.back-meal {
+  margin-left: 20px;
+}
+
+.stats {
+  padding-bottom: 30px;
+  & > div {
+    padding-bottom: 7px;
+    & > span:first-child {
+      color: #000;
+      display: inline-block;
+      width: 150px;
+    }
+  }
+  &.bar > div > span:first-child {
+    width: 400px;
+  }
+}

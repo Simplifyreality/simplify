@@ -1,0 +1,31 @@
+.accordion-list {
+	.section-container {
+		&.accordion {
+			border-top: none;
+
+/* styles for section headings */
+/* adds padding and bg colour to section headings */
+		> section {
+			> .title {
+				border-left: none;
+				border-right: none;
+				border-bottom: 1px solid $mediumGrey;
+				padding: 20px 14px 20px 9px;
+				background-color: $white;
+				font-weight: bold;
+				color: #333333;
+			}
+
+	/* styles for accordion content */
+				.content {
+					padding: 14px 10px;
+					background-color: #ffffff;
+					border-top: none;
+					border-left: none;
+					border-right: none;
+					border-bottom: 1px solid $darkGrey;
+				}
+			}
+		}
+	}
+}

@@ -1,0 +1,57 @@
+/* background colour for top menu bar (not collapsed) */
+// .fixed {
+	// margin-top: 15px;
+	.top-bar {
+		background: $darkGrey;
+
+		.top-bar-section {
+					ul li {
+
+						&.hover > a:not(.button) {
+							background-color: $darkGrey;
+						}
+
+						> a {
+				/* background and font colour for hidden menu items */
+				background-color: $darkGrey;
+				color: $lightGrey;
+				font-size: 0.75em;
+
+				&:hover {
+					background-color: $darkGrey;
+				}
+			}
+		}
+	}
+
+	/* padding on menu bar */
+		.title-area {
+			padding-left: 10px;
+		}
+	}
+
+	/* styles for when top bar menu items have collapsed into hidden menu */
+	.top-bar.expanded {
+		margin-bottom: 15px;
+	/* background colour for menu bar */
+		.title-area {
+			background-color: $darkGrey;
+		}
+
+		.top-bar-section {
+			ul li {
+					> a {
+					/* background and font colour for hidden menu items */
+					background-color: $mediumGrey;
+					color: $lightGrey;
+				}
+			}
+		}
+	}
+// }
+
+
+
+// .top-bar-section li.hover > a:not(.button) {
+// 	background-color: $darkGrey;
+// }

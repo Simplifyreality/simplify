@@ -1,0 +1,166 @@
+html, body {
+	min-height: 100%;
+}
+
+body {
+	padding: 0px 0px 30px 0px;
+	position: relative;
+}
+
+.logo {
+	width: 100px;
+	height: 37px;
+}
+
+.left-col {
+	padding: 10px;
+}
+
+/* main content area (right-hand column) */
+.main-content {
+	padding: 10px 20px 0 25px;
+	clear: both;
+}
+
+// .container > .main-content > header > h1 {
+// 	margin-top: 50px;
+// }
+
+.overlay {
+	position: fixed;
+	top: 0;
+	left: 0;
+	height: 100%;
+	width: 100%;
+	background-color: #000000;
+	opacity: 0.5;
+	-ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=50)";
+	z-index: 10;
+}
+
+
+/* status classes */
+.status {
+  display: block;
+  width: 25px;
+  height: 25px;
+  margin: 0px 12px 0 0;
+
+  &.submitted {
+    background-color: $green;
+  }
+
+  &.started {
+    background-color: $orange;
+  }
+
+  &.depeche {
+    background-color: $status-depeche;
+  }
+
+  &.closed {
+    background-color: $status-closed;
+  }
+}
+
+.status-legend {
+  margin-right: 20px;
+}
+
+.filter-tag {
+	border: 1px solid $mediumGrey;
+	border-radius: 8px;
+	background-color: $white;
+	padding: 6px 9px;
+	margin: 0 8px 0 0;
+	font-size: emCalc(13);
+	color: $darkGrey;
+	display: inline-block;
+	width: auto;
+
+	a {
+		color: $darkGrey;
+
+		&:visited {
+			color: $darkGrey;
+		}
+
+		&:hover {
+			color: $charcoalGrey;
+		}
+
+		&.close {
+			font-size: emCalc(20);
+			margin-left: 10px;
+		}
+	}
+}
+
+table {
+	tbody {
+		ul {
+			margin: 0;
+			list-style-position: inside;
+			li {
+				clear: both;
+			}
+		}
+	}
+}
+
+.priority-depeche {
+	background-color: $status-depeche;
+	color: $white;
+}
+
+.priority-closed {
+  background-color: $status-closed;
+  color: $white;
+}
+
+.issue-category-family, .fault-attachments, .fault-comments, .assignment-details, .issue-category-details, .issue-attachments, .issue-description, .passenger-details, .user-announcement {
+	border-bottom: 1px solid $lightMediumGrey;
+	margin: 0 0 1.1875em 0;
+	padding: 0 0 20px 0;
+}
+
+.special-announcement {
+	border-bottom: 1px solid $lightMediumGrey;
+	margin: 0 0 1.1875em 0;
+	padding: 0 0 10px 0;
+}
+
+.special-announcement:last-of-type, .user-announcement:last-of-type {
+	border: none;
+	padding: 0;
+}
+
+.jl-entry {
+	border-bottom: 1px solid $lightMediumGrey;
+	margin: 0 0 1.1875em 0;
+	padding: 0;
+}
+
+.jl-entry:last-of-type {
+	border: none;
+	margin: 0;
+}
+
+.daily-orders {
+	border-top: 1px solid $lightMediumGrey;
+	padding: 20px 0 0 0;
+}
+
+.modal-action-buttons {
+	margin: 20px 0 0 0;
+	padding: 20px 0 0 0;
+	border-top: 1px solid $lightMediumGrey;
+}
+
+[data-section="tabs"], .section-container.tabs, [data-section=""], [data-section="auto"], .section-container.auto {
+	margin: 0;
+}
+
+[class*="block-grid-"] li {
+	padding-bottom: 0px;
+}

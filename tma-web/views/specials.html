@@ -1,0 +1,332 @@
+<header>
+	<div class="row">
+		<div class="small-12 medium-12 large-12 columns">
+			<h1 class="left mr-20" translate="specials.title"></h1>
+			<span class="left"><a href="" ng-click="newSpecial()" class="button radius mr-8"><i class="fa fa-plus"></i> {{'specials.addSpecial' | translate}}</a>
+			<a href="" class="button radius margin-reset" ng-click="showFilterModal()"><i class="fa fa-filter"></i> {{'specials.filters' | translate}}</a></span>
+		</div>
+	</div>
+</header>
+
+<div class="alert-box success mt-15" ng-show="specialAdded" translate="specials.created">
+</div>
+<div class="alert-box success mt-15" ng-show="specialUpdated" translate="specials.updated">
+</div>
+
+<div class="row flexbox-va mt-15 ng-scope">
+	<div class="small-12 medium-12 large-12 columns">
+		<span class="filter-tag" ng-show="options.dateFrom">
+			<span class="left">{{'filter.dateFrom' | translate}}: {{options.dateFrom}}</span>
+			<a href="" ng-click="removeSelectedFilter('dateFrom')" class="right close"><i class="fa fa-times-circle"></i></a>
+		</span>
+		<span class="filter-tag" ng-show="options.dateTo">
+			<span class="left">{{'filter.dateTo' | translate}}: {{options.dateTo}}</span>
+			<a href="" ng-click="removeSelectedFilter('dateTo')" class="right close"><i class="fa fa-times-circle"></i></a>
+		</span>
+		<span class="filter-tag" ng-show="options.trainNumber" ng-repeat="t in options.trainNumber">
+			<span class="left">{{'filter.title.trainNumber' | translate}}: {{t}}</span>
+			<a href="" ng-click="removeSelectedFilter('trainNumber', t)" class="right close"><i class="fa fa-times-circle"></i></a>
+		</span>
+	</div>
+</div>
+
+<!-- Start Specials list -->
+<div class="specials-list mt-15">
+	<table width="100%" ng-init="list();">
+		<thead>
+			<tr>
+				<th translate="specials.table.title"></th>
+				<th translate="specials.table.from"></th>
+				<th translate="specials.table.to"></th>
+				<th translate="specials.table.trainNumbers"></th>
+				<th></th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr ng-repeat="s in specials.content">
+				<td>{{s.script['en'].title}}</td>
+				<td>{{s.startDate | date:'dd-MM-yyyy'}}</td>
+				<td>{{s.endDate | date:'dd-MM-yyyy'}}</td>
+				<td>
+					<ul ng-show="s.trainNumbers">
+						<li ng-repeat="t in s.trainNumbers">{{t}}</li>
+					</ul>
+				</td>
+				<td class="right"><a href="" class="button radius small mr-8" ng-click="editSpecial(s)"><i class="fa fa-pencil"></i> {{'specials.editSpecial' | translate}}</a><a href="" class="button radius small margin-reset" ng-click="deleteSpecial(s)"><i class="fa fa-times"></i> {{'specials.deleteSpecial' | translate}}</a></td>
+			</tr>
+		</tbody>
+	</table>
+	<div pagination content="specials" callback="changePage"></div>
+</div>
+<!-- End Specials list -->
+
+<!-- Start Daily Orders -->
+<div class="daily-orders" ng-init="initDailyOrder()">
+	<div class="alert-box mt-15 mb-15" ng-show="fileUploadError" translate="upload.error">
+	</div>
+	<div class="row">
+		<div class="small-12 medium-12 large-12 columns">
+			<header>
+				<h1 translate="dailyOrders.title"></h1>
+			</header>
+		</div>
+	</div>
+	<div class="row">
+		<form ng-submit="uploadDailyOrder()">
+		<div class="small-12 medium-12 large-12 columns">
+			<div class="small-8 medium-4 large-4 columns">
+				<input type="file" id="dailyOrderFile" accept="application/pdf" class="browse-file-input">
+			</div>
+			<div class="small-4 medium-8 large-8 columns">
+				<button class="button radius ml-8" type="submit"><i class="fa fa-plus"></i> {{'dailyOrders.upload' | translate}}</button>
+			</div>
+		</div>
+		</form>
+	</div>
+	<div class="row" ng-show="dailyOrderFile">
+		<div class="small-12 medium-12 large-12 columns">
+			<a href="{{api + '/daily_orders/download'}}" target="_blank">{{'dailyOrders.label' | translate}} {{dailyOrderFile.date | date:'dd-MM-yyyy'}}</a>
+		</div>
+	</div>
+</div>
+
+<!-- End Daily Orders -->
+
+<!-- Start Add Special lightbox -->
+<div id="specialModal" class="reveal-modal medium">
+	<h2 ng-show="specialModal.isNewSpecial" translate="specials.addSpecial" class="modal-header"></h2>
+	<h2 ng-show="!specialModal.isNewSpecial" class="modal-header">{{'specials.editSpecial' | translate}} {{specialModal.title}}</h2>
+	<form>
+		<div class="row">
+			<div class="small-12 medium-11 large-9 columns">
+				<div class="row">
+					<div class="small-2 medium-2 large-2 columns">
+						<label for="special-date-from" class="inline"><span class="red">*</span> {{'specials.dateFrom' | translate}}</label>
+					</div>
+					<div class="small-4 medium-4 large-5 columns" ng-class="{error: specialModal.errors['startDate']}">
+						<input id="special-date-from" type="text" ng-model="specialModal.special.startDate" placeholder="{{'specials.dateFrom.placeholder' | translate}}" data-date-format="dd-mm-yyyy">
+						<small ng-show="specialModal.errors['startDate']">{{specialModal.errors['startDate'] | translate}}</small>
+					</div>
+					<div class="small-2 medium-2 large-1 columns">
+						<label for="special-date-to" class="inline right"><span class="red">*</span> {{'specials.dateTo' | translate}}</label>
+					</div>
+					<div class="small-4 medium-4 large-4 columns" ng-class="{error: specialModal.errors['endDate']}">
+						<input id="special-date-to" type="text" ng-model="specialModal.special.endDate" placeholder="{{'specials.dateTo.placeholder' | translate}}" data-date-format="dd-mm-yyyy">
+						<small ng-show="specialModal.errors['endDate']">{{specialModal.errors['endDate'] | translate}}</small>
+					</div>
+				</div>
+				<div class="row">
+					<div class="small-2 columns">
+						<label for="special-train-num" class="inline">{{'specials.trainNumber' | translate}}</label>
+					</div>
+					<div class="small-8 columns">
+						<input id="special-train-num" class="left" type="text" placeholder="{{'specials.trainNumber.placeholder' | translate}}" ng-model="specialModal.trainNumberToAdd">
+					</div>
+					<div class="small-2 columns">
+						<a href="" class="button radius ml-8 right" ng-click="addTrainNumber();"><i class="fa fa-plus"></i> {{"specials.trainNumber.addTrainNumber" | translate}}</a>
+					</div>
+				</div>
+				<div class="mb-15">
+					<div class="row">
+						<div class="small-offset-2 small-10 columns">
+							<span class="filter-tag" ng-repeat="t in specialModal.trainNumbers track by $index">
+								<span class="left">{{t}}</span>
+								<a href="" ng-click="removeTrainNumber($index)" class="right close"><i class="fa fa-times-circle"></i></a>
+							</span>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<div class="row">
+			<div class="small-12 medium-12 large-12 columns">
+				<div class="section-container tabs" data-section="tabs" ng-init="tab = tab == null ? 'english' : tab">
+					<section ng-class="{active: tab == 'english'}">
+						<p class="title"><a ng-click="tab = 'english'"><img src="img/flag_uk.jpg" alt="English" /> {{'specials.english' | translate}}</a></p>
+					</section>
+					<section ng-class="{active: tab == 'french'}">
+						<p class="title"><a ng-click="tab = 'french'"><img src="img/flag_france.jpg" alt="French" /> {{'specials.french' | translate}}</a></p>
+					</section>
+					<section ng-class="{active: tab == 'dutch'}">
+						<p class="title"><a ng-click="tab = 'dutch'"><img src="img/flag_belgium.jpg" alt="Dutch" /> {{'specials.dutch' | translate}}</a></p>
+					</section>
+					<section ng-class="{active: tab == 'german'}">
+						<p class="title"><a ng-click="tab = 'german'"><img src="img/flag_germany.jpg" alt="German" /> {{'specials.german' | translate}}</a></p>
+					</section>
+				</div>
+
+				<div class="tabs">
+					<div class="content" ng-show="tab == 'english'">
+						<div class="row">
+							<div class="small-1 medium-1 large-1 columns">
+								<label for="special-english-title" class="inline"><span class="red">*</span> {{'specials.english.title' | translate}}</label>
+							</div>
+							<div class="small-11 medium-11 large-11 columns" ng-class="{error: (specialModal.errors.script || specialModal.errors['script[en].title'])}">
+								<input id="special-english-title" type="text" ng-model="specialModal.special.script['en'].title"  placeholder="{{'specials.english.title.placeholder' | translate}}">
+								<small ng-show="specialModal.errors.script">{{specialModal.errors.script | translate}}</small>
+								<small ng-show="specialModal.errors['script[en].title']">{{specialModal.errors['script[en].title'] | translate}}</small>
+							</div>
+						</div>
+						<div class="row">
+							<div class="small-12 medium-12 columns" ng-class="{error: specialModal.errors['script[en].script']}">
+								<textarea id="special-english" type="text"  ng-model="specialModal.special.script['en'].script"  placeholder="{{'specials.english.placeholder' | translate}}"></textarea>
+								<small ng-show="specialModal.errors['script[en].script']">{{specialModal.errors['script[en].script'] | translate}}</small>
+							</div>
+						</div>
+					</div>
+					<div class="content" ng-show="tab == 'french'">
+						<div class="row">
+							<div class="small-1 medium-1 large-1 columns">
+								<label for="special-french-title" class="inline"><span class="red">*</span> {{'specials.french.title' | translate}}</label>
+							</div>
+							<div class="small-11 medium-11 large-11 columns" ng-class="{error: (specialModal.errors.script || specialModal.errors['script[fr].title'])}">
+								<input id="special-french-title" type="text" ng-model="specialModal.special.script['fr'].title" placeholder="{{'specials.french.title.placeholder' | translate}}">
+								<small ng-show="specialModal.errors.script">{{specialModal.errors.script | translate}}</small>
+								<small ng-show="specialModal.errors['script[fr].title']">{{specialModal.errors['script[fr].title'] | translate}}</small>
+							</div>
+						</div>
+						<div class="row">
+							<div class="small-12 medium-12 large-12 columns" ng-class="{error: specialModal.errors['script[fr].script']}">
+								<textarea id="special-french" type="text" ng-model="specialModal.special.script['fr'].script"  placeholder="{{'specials.french.placeholder' | translate}}"></textarea>
+								<small ng-show="specialModal.errors['script[fr].script']">{{specialModal.errors['script[fr].script'] | translate}}</small>
+							</div>
+						</div>
+					</div>
+
+					<div class="content" ng-show="tab == 'dutch'">
+						<div class="row">
+							<div class="small-1 medium-1 large-1 columns">
+								<label for="special-dutch-title" class="inline">{{'specials.dutch.title' | translate}}</label>
+							</div>
+							<div class="small-11 medium-11 large-11 columns" ng-class="{error: specialModal.errors['script[nl].title']}">
+								<input id="special-dutch-title" type="text" ng-model="specialModal.special.script['nl'].title"  placeholder="{{'specials.dutch.title.placeholder' | translate}}">
+								<small ng-show="specialModal.errors['script[nl].title']">{{specialModal.errors['script[nl].title'] | translate}}</small>
+							</div>
+						</div>
+						<div class="row">
+							<div class="small-12 medium-12 large-12 columns" ng-class="{error: specialModal.errors['script[nl].script']}">
+								<textarea id="special-dutch" type="text"  ng-model="specialModal.special.script['nl'].script" placeholder="{{'specials.dutch.placeholder' | translate}}"></textarea>
+								<small ng-show="specialModal.errors['script[nl].script']">{{specialModal.errors['script[nl].script'] | translate}}</small>
+							</div>
+						</div>
+					</div>
+
+					<div class="content" ng-show="tab == 'german'">
+						<div class="row">
+							<div class="small-1 medium-1 large-1 columns">
+								<label for="special-german-title" class="inline">{{'specials.german.title' | translate}}</label>
+							</div>
+							<div class="small-11 medium-11 large-11 columns" ng-class="{error: specialModal.errors['script[de].title']}">
+								<input id="special-german-title" type="text"  ng-model="specialModal.special.script['de'].title" placeholder="{{'specials.german.title.placeholder' | translate}}">
+								<small ng-show="specialModal.errors['script[de].title']">{{specialModal.errors['script[de].title'] | translate}}</small>
+							</div>
+						</div>
+						<div class="row">
+							<div class="small-12 medium-12 large-12 columns" ng-class="{error: specialModal.errors['script[de].script']}">
+								<textarea id="special-german" type="text"  ng-model="specialModal.special.script['de'].script" placeholder="{{'specials.german.placeholder' | translate}}"></textarea>
+								<small ng-show="specialModal.errors['script[de].script']">{{specialModal.errors['script[de].script'] | translate}}</small>
+							</div>
+						</div>
+					</div>
+
+				</div>
+			</div>
+		</div>
+
+		<div class="modal-action-buttons flexbox-h-end">
+			<div class="row">
+				<div class="small-12 medium-12 large-12 columns">
+					<span class="right"><a href="" class="button cancel radius small left mr-8" translate="specials.modal.cancel" ng-click="cancelModal()"></a>
+					<a href="" class="button radius small margin-reset" translate="specials.modal.save" ng-click="saveSpecial()"></a></span>
+				</div>
+			</div>
+		</div>
+
+	</form>
+		<a href="" class="close-reveal-modal" ng-click="cancelModal()">&#215;</a>
+</div>
+<!-- End Add Special lightbox -->
+
+<!-- filter modal -->
+<div class="overlay" ng-show="showFilters"></div>
+<div class="row" id="journey-filters" ng-show="showFilters">
+	<div class="small-4 medium-3 large-2 columns filter-nav off-canvas">
+		<!-- Start header -->
+		<div class="row">
+			<div class="small-12 medium-12 large-12 columns">
+				<a href="" class="right close-button" ng-click="hideFilterModal()"><i class="fa fa-times"></i></a>
+			</div>
+		</div>
+		<div class="row flexbox-va">
+			<div class="small-12 medium-12 large-12 columns">
+				<header>
+					<h2 translate="filter.title"></h2>
+				</header>
+			</div>
+		</div>
+		<!-- End header -->
+
+		<!-- Start Accordion -->
+		<div class="section-container accordion">
+			<!-- Start Date Range -->
+			<section ng-class="{active : filterView == 'dateFrom'}">
+				<p class="title" data-section-title>
+					<a href="" ng-click="switchFilterView('dateFrom')" class="filter-heading" translate="filter.title.dateRange"></a>
+				</p>
+				<div class="content" data-section-content>
+					<div class="row filter-options">
+						<div class="small-4 medium-4 large-3 columns">
+							<label for="date-from" class="inline left" translate="filter.dateFrom"></label>
+						</div>
+						<div class="small-8 medium-8 large-9 columns">
+							<input type="text" id="date-from" ng-model="filters.dateFrom" placeholder="{{'filter.dateFrom.placeholder' | translate}}" data-date-format="dd-mm-yyyy">
+						</div>
+					</div>
+					<div class="row filter-options">
+						<div class="small-4 medium-4 large-3 columns">
+							<label for="date-to" class="inline left" translate="filter.dateTo"></label>
+						</div>
+						<div class="small-8 medium-8 large-9 columns">
+							<input type="text" id="date-to" ng-model="filters.dateTo" placeholder="{{'filter.dateTo.placeholder' | translate}}" data-date-format="dd-mm-yyyy">
+						</div>
+					</div>
+				</div>
+			</section>
+			<!-- End Date Range -->
+			<!-- Start Train no. -->
+			<section ng-class="{active : filterView == 'trainNumber'}">
+				<p class="title" data-section-title>
+					<a href="" ng-click="switchFilterView('trainNumber');" class="filter-heading" translate="filter.title.trainNumber"></a>
+				</p>
+				<div class="content" data-section-content>
+					<div class="row filter-options">
+						<div class="small-9 medium-9 large-9 columns">
+							<input type="text" id="train-number" ng-model="trainNumberToAdd" placeholder="{{'filter.trainNumber.placeholder' | translate}}">
+						</div>
+						<div class="small-3 medium-3 large-3 columns">
+							<a href="" class="button radius right margin-reset" ng-click="addFilter('trainNumber', 'trainNumberToAdd')"><i class="fa fa-plus"></i> {{filter.button.add | translate}}</a>
+						</div>
+					</div>
+					<!-- Start display of selected filters -->
+					<div class="row filter-selections flexbox-va">
+						<span class="filter-tag" ng-repeat="t in filters.trainNumber">
+							<span class="left">{{t}}</span>
+							<a href="" ng-click="removeFilter('trainNumber', t)" class="right close"><i class="fa fa-times-circle"></i></a>
+						</span>
+					</div>
+					<!-- End display of selected filters -->
+				</div>
+			</section>
+			<!-- End train no. -->
+		</div>
+		<!-- End Accordion -->
+		<!-- Start Apply button -->
+		<div class="row mt-15">
+			<div class="small-12 medium-12 large-12 columns flexbox-h-end">
+				<a href="" class="button radius right margin-reset" translate="filter.button.apply" ng-click="applyFilters()"></a>
+			</div>
+		</div>
+		<!-- End Apply button -->
+	</div>
+</div>

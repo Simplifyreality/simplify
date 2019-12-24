@@ -1,0 +1,297 @@
+<header>
+  <div class="row">
+    <div class="small-12 medium-12 large-12 columns">
+      <h1 class="left mr-20" translate="announcements.title"></h1>
+      <span class="left" ng-if="hasPermission('ROLE_STANDARD_ANNOUNCEMENTS')">
+        <a href="" ng-click="newAnnouncement()" class="button radius small margin-reset"><i
+          class="fa fa-plus"></i> {{'announcements.addAnnouncement' | translate}}</a>
+      </span>
+    </div>
+  </div>
+</header>
+
+<div class="alert-box success mt-15" ng-show="announcementUpdated" translate="addressManagement.updated">
+</div>
+
+<div class="row mt-15">
+  <div class="small-12 medium-12 large-12 columns" ng-init="list()">
+    <div class="section-container tabs" data-section="tabs">
+      <section ng-class="{active: announcementsTab == 'RoutineAnnouncements'}">
+        <p class="title"><a ng-click="changeTab('RoutineAnnouncements')">{{"announcements.RoutineAnnouncements" |
+          translate}}</a></p>
+      </section>
+      <section ng-class="{active: announcementsTab == 'Disruption'}">
+        <p class="title"><a ng-click="changeTab('Disruption')">{{"announcements.Disruption" | translate}}</a></p>
+      </section>
+      <section ng-class="{active: announcementsTab == 'Evacuation'}">
+        <p class="title"><a ng-click="changeTab('Evacuation')">{{"announcements.Evacuation" | translate}}</a></p>
+      </section>
+    </div>
+    <div class="tabs">
+      <div class="content" ng-repeat="a in tabs" ng-show="announcementsTab == a">
+        <table width="100%" class="mt-15">
+          <thead>
+          <tr>
+            <th ng-repeat="c in columns[announcementsTab]">
+              <a ng-click="sort(null, $event)" data-column="{{c.key}}">{{c.title | translate}}</a>
+              <i ng-show="options[c.key + '.dir'] === 'DESC'" class="fa fa-caret-down"></i>
+              <i ng-show="options[c.key + '.dir'] === 'ASC'" class="fa fa-caret-up"></i>
+            </th>
+            <th>{{"announcements.routine.table.title" | translate}}</th>
+            <th translate="announcements.routine.table.edit"></th>
+          </tr>
+          </thead>
+          <tbody>
+          <tr ng-repeat="r in announcements">
+            <td ng-repeat="c in columns[announcementsTab]">{{r[c.key]}}</td>
+            <td>{{r['script']['en']['title']}}</td>
+            <td>
+              <a href="" ng-click="editAnnouncement(r)" class="button radius small margin-reset"><i
+                  class="fa fa-pencil hide-for-small"></i> {{'announcements.editAnnouncement' | translate}}</a>
+              <a href="" ng-if="hasPermission('ROLE_STANDARD_ANNOUNCEMENTS')"
+                 class="button radius small margin-reset"
+                 ng-click="deleteAnnouncement(r)">
+                <i class="fa fa-times"></i> {{'announcements.deleteAnnouncement' | translate}}
+              </a>
+            </td>
+          </tr>
+          </tbody>
+        </table>
+        <div pagination content="data" ng-show="data.totalPages > 1" callback="changePage"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- Start Edit Announcement lightbox -->
+<div id="announcementsModal" class="reveal-modal medium">
+  <h2 ng-show="announcementsModal.isNewAnnouncement" translate="announcements.addAnnouncement"
+      class="modal-header"></h2>
+  <h2 ng-show="!announcementsModal.isNewAnnouncement" class="modal-header">{{'announcements.editAnnouncement' |
+    translate}} {{announcementModal.title}}</h2>
+  <form class="custom">
+    <div class="alert-box alert" ng-show="announcementsModal.isValidationError">
+      <div translate="admin.users.modal.validationError"></div>
+    </div>
+    <div class="alert-box alert" ng-show="announcementsModal.isGenericError">
+      <span translate="admin.users.modal.genericError"></span>
+    </div>
+    <div class="row mt-15">
+      <div class="small-12 medium-12 large-9 columns">
+
+        <div class="row">
+          <div class="small-4 columns">
+            <label class="inline">{{'announcements.modal.announcementType' | translate}}</label>
+          </div>
+          <div class="small-8 columns">
+            <label class="inline">
+              {{("announcements." + announcementsModal.announcement.category) | translate}}</label>
+            <div ng-show="false" class="small-12 medium-12 large-9 columns"
+                 ng-class="{'error': announcementsModal.errors.category}">
+              <div form-select id="selectedCategory" name="selectedCategory"
+                   select-values="announcementsModal.categories"
+                   ng-model="announcementsModal.announcement.category"></div>
+              <small ng-show="announcementsModal.errors.category">{{announcementsModal.errors.category | translate}}
+              </small>
+            </div>
+          </div>
+        </div>
+
+        <div class="row" ng-show="announcementsModal.announcement.category == 'RoutineAnnouncements'">
+          <div class="small-4 columns">
+            <label class="inline">{{'announcements.modal.city-route' | translate}}</label>
+          </div>
+          <div class="small-8 columns">
+            <label ng-show="!announcementsModal.isNewAnnouncement" class="inline">{{announcementsModal.announcement.routename}}</label>
+            <div ng-show="announcementsModal.isNewAnnouncement" class="small-12 medium-12 large-9 columns"
+                 ng-class="{'error': announcementsModal.errors.routename}">
+              <div form-select id="selectedPlace" name="selectedPlace" select-values="announcementsModal.routes"
+                   ng-model="announcementsModal.announcement.routename"></div>
+              <small ng-show="announcementsModal.errors.routename">{{announcementsModal.errors.routename | translate}}
+              </small>
+            </div>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="small-4 columns">
+            <label class="inline">{{'announcements.modal.announcementSubcategory' | translate}}</label>
+          </div>
+          <div class="small-8  columns">
+            <label ng-show="!announcementsModal.isNewAnnouncement" class="inline">{{announcementsModal.announcement.subCategory}}</label>
+            <div ng-show="announcementsModal.isNewAnnouncement" class="small-12 medium-12 large-9 columns"
+                 ng-class="{'error': announcementsModal.errors.subCategory}">
+              <div form-select id="selectedSubCategory" name="selectedSubCategory"
+                   select-values="announcementsModal.subCategories"
+                   ng-model="announcementsModal.announcement.subCategory"></div>
+              <small ng-show="announcementsModal.errors.subCategory">{{announcementsModal.errors.subCategory |
+                translate}}
+              </small>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="small-12 medium-12 large-12 columns">
+        <div class="section-container tabs" data-section="tabs" ng-init="tab = tab == null ? 'english' : tab">
+          <section ng-class="{active: tab == 'english'}">
+            <p class="title"><a ng-click="tab = 'english'"><img src="img/flag_uk.jpg" alt="English"/>
+              {{'announcements.english' | translate}}</a></p>
+          </section>
+          <section ng-class="{active: tab == 'french'}">
+            <p class="title"><a ng-click="tab = 'french'"><img src="img/flag_france.jpg" alt="French"/>
+              {{'announcements.french' | translate}}</a></p>
+          </section>
+          <section ng-class="{active: tab == 'dutch'}">
+            <p class="title">
+              <a ng-click="tab = 'dutch'">
+                <img src="img/flag_belgium.jpg" alt="Belgian"/>
+                <img src="img/flag_dutch.jpg" alt="Dutch"/>
+                {{'announcements.dutch' | translate}}
+            </a></p>
+          </section>
+          <section ng-class="{active: tab == 'german'}">
+            <p class="title"><a ng-click="tab = 'german'"><img src="img/flag_germany.jpg" alt="German"/>
+              {{'announcements.german' | translate}}</a></p>
+          </section>
+        </div>
+
+        <div class="tabs">
+          <div class="content" ng-show="tab == 'english'">
+            <div class="row">
+              <div class="small-2 medium-1 large-1 columns">
+                <label for="announcements-english-title" class="inline">{{'announcements.english.title' |
+                  translate}}</label>
+              </div>
+              <div class="small-10 medium-11 large-11 columns"
+                   ng-class="{error: announcementsModal.errors['script[en].title']}">
+                <input id="announcements-english-title" type="text"
+                       ng-model="announcementsModal.announcement.script.en.title"
+                       placeholder="{{'announcements.english.title.placeholder' | translate}}">
+                <small ng-show="announcementsModal.errors['script[en].title']">
+                  {{announcementsModal.errors['script[en].title'] | translate}}
+                </small>
+              </div>
+            </div>
+            <div class="row">
+              <div class="small-12 medium-12 large-12 columns"
+                   ng-class="{error: announcementsModal.errors['script[en].script']}">
+                <textarea id="announcements-english" type="text" rows="10"
+                          ng-model="announcementsModal.announcement.script.en.script"
+                          placeholder="{{'announcements.english.placeholder' | translate}}"></textarea>
+                <small ng-show="announcementsModal.errors['script[en].script']">
+                  {{announcementsModal.errors['script[en].script'] | translate}}
+                </small>
+              </div>
+            </div>
+          </div>
+
+          <div class="content" ng-show="tab == 'french'">
+            <div class="row">
+              <div class="small-2 medium-1 large-1 columns">
+                <label for="announcements-french-title" class="inline">{{'announcements.french.title' |
+                  translate}}</label>
+              </div>
+              <div class="small-10 medium-11 large-11 columns"
+                   ng-class="{error: announcementsModal.errors['script[fr].title']}">
+                <input id="announcements-french-title" type="text"
+                       ng-model="announcementsModal.announcement.script.fr.title"
+                       placeholder="{{'announcements.french.title.placeholder' | translate}}">
+                <small ng-show="announcementsModal.errors['script[fr].title']">
+                  {{announcementsModal.errors['script[fr].title'] | translate}}
+                </small>
+              </div>
+            </div>
+            <div class="row">
+              <div class="small-12 medium-12 large-12 columns"
+                   ng-class="{error: announcementsModal.errors['script[fr].script']}">
+                <textarea id="announcements-french" type="text" rows="10"
+                          ng-model="announcementsModal.announcement.script.fr.script"
+                          placeholder="{{'announcements.french.placeholder' | translate}}"></textarea>
+                <small ng-show="announcementsModal.errors['script[fr].script']">
+                  {{announcementsModal.errors['script[fr].script'] | translate}}
+                </small>
+              </div>
+            </div>
+          </div>
+
+          <div class="content" ng-show="tab == 'dutch'">
+            <div class="row">
+              <div class="small-2 medium-1 large-1 columns">
+                <label for="announcements-dutch-title" class="inline">{{'announcements.dutch.title' |
+                  translate}}</label>
+              </div>
+              <div class="small-10 medium-11 large-11 columns"
+                   ng-class="{error: announcementsModal.errors['script[nl].title']}">
+                <input id="announcements-dutch-title" type="text"
+                       ng-model="announcementsModal.announcement.script.nl.title"
+                       placeholder="{{'announcements.dutch.title.placeholder' | translate}}">
+                <small ng-show="announcementsModal.errors['script[nl].title']">
+                  {{announcementsModal.errors['script[nl].title'] | translate}}
+                </small>
+              </div>
+            </div>
+            <div class="row">
+              <div class="small-12 medium-12 large-12 columns"
+                   ng-class="{error: announcementsModal.errors['script[nl].script']}">
+                <textarea id="announcements-dutch" type="text" rows="10"
+                          ng-model="announcementsModal.announcement.script.nl.script"
+                          placeholder="{{'announcements.dutch.placeholder' | translate}}"></textarea>
+                <small ng-show="announcementsModal.errors['script[nl].script']">
+                  {{announcementsModal.errors['script[nl].script'] | translate}}
+                </small>
+              </div>
+            </div>
+          </div>
+
+          <div class="content" ng-show="tab == 'german'">
+            <div class="row">
+              <div class="small-2 medium-1 large-1 columns">
+                <label for="announcements-german-title" class="inline">{{'announcements.german.title' |
+                  translate}}</label>
+              </div>
+              <div class="small-10 medium-11 large-11 columns"
+                   ng-class="{error: announcementsModal.errors['script[de].title']}">
+                <input id="announcements-german-title" type="text"
+                       ng-model="announcementsModal.announcement.script.de.title"
+                       placeholder="{{'announcements.german.title.placeholder' | translate}}">
+                <small ng-show="announcementsModal.errors['script[de].title']">
+                  {{announcementsModal.errors['script[de].title'] | translate}}
+                </small>
+              </div>
+            </div>
+            <div class="row">
+              <div class="small-12 medium-12 large-12 columns"
+                   ng-class="{error: announcementsModal.errors['script[de].script']}">
+                <textarea id="announcements-german" type="text" rows="10"
+                          ng-model="announcementsModal.announcement.script.de.script"
+                          placeholder="{{'announcements.german.placeholder' | translate}}"></textarea>
+                <small ng-show="announcementsModal.errors['script[de].script']">
+                  {{announcementsModal.errors['script[de].script'] | translate}}
+                </small>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <div class="modal-action-buttons flexbox-h-end">
+      <div class="row">
+        <div class="small-12 medium-12 large-12 columns">
+					<span class="right"><a href="" class="button cancel radius small left mr-8"
+                                 translate="announcements.modal.cancel" ng-click="cancelModal()"></a>
+					<a href="" class="button radius small margin-reset" translate="announcements.modal.save"
+             ng-click="saveAnnouncement()"></a></span>
+        </div>
+      </div>
+    </div>
+
+  </form>
+  <a href="" ng-click="cancelModal();" class="close-reveal-modal">&#215;</a>
+</div>
+<!-- End Edit Announcement -->

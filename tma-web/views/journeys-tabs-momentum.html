@@ -1,0 +1,590 @@
+<div class="row">
+    <div class="small-12 medium-12 large-12 columns">
+        <a ng-href="#{{viewAll}}"><i class="fa fa-caret-left"></i> {{'journeys.details.backLink' | translate}}</a>
+    </div>
+</div>
+
+<header>
+    <div class="row mt-15">
+        <div class="small-12 medium-12 large-12 columns">
+            <h1 class="left mr-20">{{'journeys.details.title' | translate}} - {{journey.trainNumber}}</h1>
+        </div>
+    </div>
+    <div class="row flexbox-va mt-15">
+        <div class="small-4 medium-7 large-2 columns">
+            <h2 class="train-details">{{journey.journeyDate | date:['dd MMM yyyy']}}</h2>
+        </div>
+        <div class="small-3 medium-2 large-2 columns">
+            <h2 class="train-details">{{journey.firstHalf}} - {{journey.lastHalf}}</h2>
+        </div>
+        <div class="small-3 medium-2 large-2 columns">
+            <h2 class="train-details">{{journey.from}} - {{journey.to}}</h2>
+        </div>
+    </div>
+</header>
+
+<div class="row mt-15" ng-init="list()">
+    <div class="small-12 medium-12 large-12 large-centered columns">
+        <!-- Start Journey Log -->
+        <div class="journey-log">
+            <div class="section-container tabs" data-section="tabs" ng-init="tab = tab == null ? 'crew' : tab">
+                <section ng-class="{active: tab == 'stats'}">
+                    <p class="title"><a href="" ng-click="changeTab('stats')">{{'journeys.details.stats.title' | translate}}</a></p>
+                </section>
+                <section ng-class="{active: tab == 'passangerNumber'}">
+                    <p class="title"><a href="" ng-click="changeTab('passangerNumber')">{{'journeys.details.passengerNumber.title' | translate}}</a>
+                    </p>
+                </section>
+                <section ng-class="{active: tab == 'crewList'}">
+                    <p class="title"><a href="" ng-click="changeTab('crewList')">{{'journeys.details.crewList.title' | translate}}</a></p>
+                </section>
+                <section ng-class="{active: tab == 'products'}">
+                    <p class="title"><a href="" ng-click="changeTab('products')">{{'journeys.details.products.title' | translate}}</a></p>
+                </section>
+                <section ng-class="{active: tab == 'equipment'}">
+                    <p class="title"><a href="" ng-click="changeTab('equipment')">{{'journeys.details.equipment.title' | translate}}</a></p>
+                </section>
+                <section ng-class="{active: tab == 'service'}">
+                    <p class="title"><a href="" ng-click="changeTab('service')">{{'journeys.details.service.title' | translate}}</a></p>
+                </section>
+                <section ng-class="{active: tab == 'bar'}">
+                    <p class="title"><a href="" ng-click="changeTab('bar')">{{'journeys.details.bar.title' | translate}}</a></p>
+                </section>
+                <section ng-class="{active: tab == 'issue_mom'}">
+                    <p class="title"><a href="" ng-click="changeTab('issue_mom')">{{'journeys.details.issues.title' | translate}}</a></p>
+                </section>
+            </div>
+            <div class="tabs">
+                <div class="content" ng-show="tab == 'stats'">
+                    <div class="jl-entry" ng-repeat="jl in journeyLogs">
+                        <header class="row">
+                            <div class="small-9 medium-10 large-6 columns">
+                                <h3 class="journey-logs-header">
+                                    {{'journeys.details.entryBy.label' | translate}}: {{jl.role}} - {{jl.username}} - {{jl.id}}
+                                    <span ng-if="journey.from === 'AMS' || journey.to === 'AMS'">
+                                        {{jl.stats.shift ? '('+jl.stats.shift+ ')' : ''}}
+                                    </span>
+                                </h3>
+                            </div>
+                            <div class="small-3 medium-2 large-6 columns">
+                                <h3 class="train-details">{{journey.from}} - {{journey.to}}</h3>
+                            </div>
+                        </header>
+                        <table width="100%">
+                            <thead>
+                            <tr>
+                                <th>Set number</th>
+                                <th>POS number</th>
+                                <th>Credit Card reader</th>
+                                <th>Train manager 1</th>
+                                <th>DOBSM name</th>
+                                <th>DOBSM ID</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr>
+                                <td>{{jl.stats.setNumber}}</td>
+                                <td>{{jl.stats.posNumber}}</td>
+                                <td>{{jl.stats.creditCardReader}}</td>
+                                <td>{{jl.stats.trainManagerName}}</td>
+                                <td>{{jl.stats.dobsmName}}</td>
+                                <td>{{jl.stats.dobsmID}}</td>
+                            </tr>
+                            </tbody>
+                        </table>
+                        <div style="padding-bottom: 5px;">Reports: </div>
+                        <table width="100%">
+                            <thead>
+                            <tr>
+                                <th>Incident</th>
+                                <th>Accident</th>
+                                <th>Carnet de Bar</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr>
+                                <td>{{jl.stats.incident ? 'Yes' : 'No'}}</td>
+                                <td>{{jl.stats.accident ? 'Yes' : 'No'}}</td>
+                                <td>{{jl.stats.carnetDeBar ? 'Yes' : 'No'}}</td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="content" ng-show="tab == 'passangerNumber'">
+                    <div class="jl-entry" ng-repeat="jl in journeyLogs">
+                        <header class="row">
+                            <div class="small-9 medium-10 large-6 columns">
+                                <h3 class="journey-logs-header">{{'journeys.details.entryBy.label' | translate}}: {{jl.role}} - {{jl.username}} - {{jl.id}}
+                                    <span ng-if="journey.from === 'AMS' || journey.to === 'AMS'">
+                                        {{jl.stats.shift ? '('+jl.stats.shift+ ')' : ''}}
+                                    </span>
+                                </h3>
+                            </div>
+                            <div class="small-3 medium-2 large-6 columns">
+                                <h3 class="train-details">{{journey.from}} - {{journey.to}}</h3>
+                            </div>
+                        </header>
+                        <table width="100%">
+                            <thead>
+                            <tr>
+                                <th translate="journeys.details.table.coachNum"></th>
+                                <th translate="journeys.details.table.coachType"></th>
+                                <th translate="journeys.details.table.passNum"></th>
+                                <th translate="journeys.details.table.upgrade"></th>
+                                <th translate="journeys.details.table.compUpgrade"></th>
+                                <th translate="journeys.details.table.joinersNum"></th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr ng-repeat="s in jl.passengerNumbers.coaches | orderBy:'coachNumber' : reverse">
+                                <td>{{s.coachNumber}}</td>
+                                <td>{{s.type}}</td>
+                                <td>{{s.passengers | num}}</td>
+                                <td>{{s.upgrades | num}}</td>
+                                <td>{{s.compUpgrades | num}}</td>
+                                <td>{{s.joiners | num}}</td>
+                            </tr>
+                            <tr>
+                                <td>All</td>
+                                <td></td>
+                                <td>{{jl.passengerNumbers.passengersAll | num}}</td>
+                                <td>{{jl.passengerNumbers.upgradesAll | num}}</td>
+                                <td>{{jl.passengerNumbers.compUpgradesAll | num}}</td>
+                                <td>{{jl.passengerNumbers.joinersAll | num}}</td>
+                            </tr>
+                            </tbody>
+                        </table>
+                        <div>Total number of BP: {{jl.passengerNumbers.bpAll | num}}</div>
+                        <div>Total number of SP: {{jl.passengerNumbers.spAll | num}}</div>
+                        <div style="margin-bottom: 15px">
+                            <span translate="journeys.details.table.standartPassNum"></span>
+                            <span>: {{jl.passengerNumbers.standard | num}}</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="content" ng-show="tab == 'crewList'">
+                    <div class="jl-entry" ng-repeat="jl in journeyLogs">
+                        <header class="row">
+                            <div class="small-9 medium-10 large-6 columns">
+                                <h3 class="journey-logs-header">{{'journeys.details.entryBy.label' | translate}}: {{jl.role}} - {{jl.username}} - {{jl.id}}
+                                    <span ng-if="journey.from === 'AMS' || journey.to === 'AMS'">
+                                         {{jl.stats.shift ? '('+jl.stats.shift+ ')' : ''}}
+                                    </span>
+                                </h3>
+                            </div>
+                            <div class="small-3 medium-2 large-6 columns">
+                                <h3 class="train-details">{{journey.from}} - {{journey.to}}</h3>
+                            </div>
+                        </header>
+                        <div>Undercrewed: {{jl.crewList.undercrewed ? 'YES' : 'NO'}}</div>
+                        <div class="row">
+                            <summary><h4 class="journey-logs-subheader" translate="journeys.details.table.crew.reasons"></h4></summary>
+                            <table width="100%">
+                                <thead>
+                                <tr>
+                                    <th></th>
+                                    <th></th>
+                                    <th>How Many?</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr>
+                                    <td>Passenger increase</td>
+                                    <td>{{jl.crewList.passengerIncrease ? 'YES' : (jl.crewList.passengerIncrease === false ? 'NO' : '-')}}</td>
+                                    <td>{{jl.crewList.passengerIncreaseCount | num}}</td>
+                                </tr>
+                                <tr>
+                                    <td>Sick / No show</td>
+                                    <td>{{jl.crewList.sickNoShow ? 'YES' : (jl.crewList.sickNoShow === false ? 'NO' : '-')}}</td>
+                                    <td>{{jl.crewList.sickNoShowCount| num}}</td>
+
+                                </tr>
+                                <tr>
+                                    <td>Pos missing at check in</td>
+                                    <td>{{jl.crewList.posMissing ? 'YES' : (jl.crewList.posMissing === false ? 'NO' : '-')}}</td>
+                                    <td>{{jl.crewList.posMissingCount| num}}</td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="row">
+                            <summary><h4 class="journey-logs-subheader" translate="journeys.details.table.crew.crewListMomentum"></h4></summary>
+                            <table width="100%">
+                                <thead>
+                                <tr>
+                                    <th translate="journeys.details.table.crew.role"></th>
+                                    <th translate="journeys.details.table.crew.name"></th>
+                                    <th translate="journeys.details.table.crew.id"></th>
+                                    <th translate="journeys.details.table.crew.changePos"></th>
+                                    <th translate="journeys.details.table.crew.undercrewed"></th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr ng-repeat="m in jl.crewList.crew | orderBy:'order'">
+                                    <td>{{m.crewRole}}</td>
+                                    <td>{{m.crewName}}</td>
+                                    <td>{{m.crewID}}</td>
+                                    <td>{{m.changePosition ? 'YES' : (m.changePosition === false ? 'NO' : '-')}}</td>
+                                    <td>{{m.undercrewed ? 'YES' : (m.undercrewed === false ? 'NO' : '-')}}</td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                <div class="content" ng-show="tab == 'products'">
+                    <div ng-repeat="jl in journeyLogs">
+                        <header class="row">
+                            <div class="small-9 medium-10 large-6 columns">
+                                <h3 class="journey-logs-header">{{'journeys.details.entryBy.label' | translate}}: {{jl.role}} - {{jl.username}} - {{jl.id}}
+                                    <span ng-if="journey.from === 'AMS' || journey.to === 'AMS'">
+                                         {{jl.stats.shift ? '('+jl.stats.shift+ ')' : ''}}
+                                    </span>
+                                </h3>
+                            </div>
+                            <div class="small-3 medium-2 large-6 columns">
+                                <h3 class="train-details">{{journey.from}} - {{journey.to}}</h3>
+                            </div>
+                        </header>
+                        <table width="100%">
+                            <thead>
+                            <tr>
+                                <th></th>
+                                <th>BP</th>
+                                <th>SP</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr>
+                                <td>TSU Loaded (specials included)</td>
+                                <td>{{jl.products.bpTsuLoaded | num}}</td>
+                                <td>{{jl.products.spTsuLoaded | num}}</td>
+                            </tr>
+                            <tr>
+                                <td>Top Up (only by rake concerned)</td>
+                                <td>{{jl.products.bpTopUp | num}}</td>
+                                <td>{{jl.products.spTopUp | num}}</td>
+                            </tr>
+                            <tr>
+                                <td>Top Down (only by rake concerned)</td>
+                                <td>{{jl.products.bpTopDown | num}}</td>
+                                <td>{{jl.products.spTopDown | num}}</td>
+                            </tr>
+                            <tr>
+                                <td>Transfer (between rakes +/-)</td>
+                                <td>{{jl.products.bpTransfert | num}}</td>
+                                <td>{{jl.products.spTransfert | num}}</td>
+                            </tr>
+                            <tr>
+                                <td>Total TSU</td>
+                                <td>{{(jl.products.bpTsuLoaded | num) + (jl.products.bpTopUp | num) - (jl.products.bpTopDown | num) + (jl.products.bpTransfert | num)}}</td>
+                                <td>{{(jl.products.spTsuLoaded | num) + (jl.products.spTopUp | num) - (jl.products.spTopDown | num) + (jl.products.spTransfert | num)}}</td>
+                            </tr>
+                            <tr>
+                                <td>Rake Total PAX</td>
+                                <td>{{jl.passengerNumbers.bpAll | num}}</td>
+                                <td>{{jl.passengerNumbers.spAll | num}}</td>
+                            </tr>
+                            <tr>
+                                <td>Wastage</td>
+                                <td>{{(jl.products.bpTsuLoaded | num) + (jl.products.bpTopUp | num) - (jl.products.bpTopDown | num) + (jl.products.bpTransfert | num) - (jl.passengerNumbers.bpAll | num)}}</td>
+                                <td>{{(jl.products.spTsuLoaded | num) + (jl.products.spTopUp | num) - (jl.products.spTopDown | num) + (jl.products.spTransfert | num) - (jl.passengerNumbers.spAll | num)}}</td>
+                            </tr>
+                            <tr>
+                                <td>Joiners No show</td>
+                                <td>{{jl.products.bpJoinersNoShow | num}}</td>
+                                <td>{{jl.products.spJoinersNoShow | num}}</td>
+                            </tr>
+                            </tbody>
+                        </table>
+                        <table width="100%">
+                            <thead>
+                            <tr>
+                                <th></th>
+                                <th>BP</th>
+                                <th>SP</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr>
+                                <td>No of FC PAX without first choice</td>
+                                <td>{{jl.products.bpPAXWithoutFirstChoice | num}}</td>
+                                <td>{{jl.products.spPAXWithoutFirstChoice | num}}</td>
+                            </tr>
+                            <tr>
+                                <td>Menus BP loaded?</td>
+                                <td>{{jl.products.bpMenusLoaded ? 'YES' : 'NO'}}</td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                            </tbody>
+                        </table>
+                        <table width="100%">
+                        <thead>
+                        <tr>
+                            <th>First Class Champagne</th>
+                            <th>Opening stock</th>
+                            <th>Opened</th>
+                            <th>Closing stock</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr>
+                            <td>75cl</td>
+                            <td>{{jl.products.firstClassChampagneOpeningStock}}</td>
+                            <td>{{jl.products.firstClassChampagneOpened}}</td>
+                            <td>{{jl.products.firstClassChampagneClosingStock}}</td>
+                        </tr>
+                        </tbody>
+                        </table>
+                        <table width="100%">
+                            <thead>
+                            <tr>
+                                <th>Bar Champagne</th>
+                                <th>Opening stock</th>
+                                <th>Opened</th>
+                                <th>Closing stock</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr>
+                                <td>75cl</td>
+                                <td>{{jl.products.bar75ChampagneOpeningStock}}</td>
+                                <td>{{jl.products.bar75ChampagneOpened}}</td>
+                                <td>{{jl.products.bar75ChampagneClosingStock}}</td>
+                            </tr>
+                            <tr>
+                                <td>35cl</td>
+                                <td>{{jl.products.bar35ChampagneOpeningStock}}</td>
+                                <td>{{jl.products.bar35ChampagneOpened}}</td>
+                                <td>{{jl.products.bar35ChampagneClosingStock}}</td>
+                            </tr>
+                            </tbody>
+                        </table>
+                        <table width="100%">
+                            <thead>
+                            <tr>
+                                <th></th>
+                                <th>Start</th>
+                                <th>End</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr ng-repeat="i in jl.products.fridges">
+                                <td>{{i.title}}</td>
+                                <td>{{i.startTemp}}</td>
+                                <td>{{i.endTemp}}</td>
+                            </tr>
+                            </tbody>
+                        </table>
+                        <div>Signature</div>
+                        <img ng-if="!!jl.products.signature" ng-src="{{api}}/photos/{{jl.products.signature}}">
+                    </div>
+                </div>
+                <div class="content" ng-show="tab == 'equipment'">
+                    <div class="jl-entry" ng-repeat="jl in journeyLogs">
+                        <header class="row">
+                            <div class="small-9 medium-10 large-6 columns">
+                                <h3 class="journey-logs-header">{{'journeys.details.entryBy.label' | translate}}: {{jl.role}} - {{jl.username}} - {{jl.id}}
+                                    <span ng-if="journey.from === 'AMS' || journey.to === 'AMS'">
+                                        {{jl.stats.shift ? '('+jl.stats.shift+ ')' : ''}}
+                                    </span>
+                                </h3>
+                            </div>
+                            <div class="small-3 medium-2 large-6 columns">
+                                <h3 class="train-details">{{journey.from}} - {{journey.to}}</h3>
+                            </div>
+                        </header>
+                        <table width="100%">
+                            <thead>
+                            <tr>
+                                <th>Seals loaded?</th>
+                                <th>Equipment Late Loading (-25 min)?</th>
+                                <th>HVV / Torch carried by all crew?</th>
+                                <th>All armoires sealed by previous crew?</th>
+                                <th>Equipment loaded?</th>
+                                <th>Equipment working?</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr>
+                                <td>{{jl.equipment.sealsLoaded ? 'YES' : (jl.equipment.sealsLoaded === false ? 'NO' : '-')}}</td>
+                                <td>{{jl.equipment.equipmentLate  ? 'YES' : (jl.equipment.equipmentLate === false ? 'NO' : '-')}}</td>
+                                <td>{{jl.equipment.hvvTorchCarried  ? 'YES' : (jl.equipment.hvvTorchCarried === false ? 'NO' : '-')}}</td>
+                                <td>{{jl.equipment.armoriesSealed  ? 'YES' : (jl.equipment.armoriesSealed === false ? 'NO' : '-')}}</td>
+                                <td>{{jl.equipment.equipmentLoaded  ? 'YES' : (jl.equipment.equipmentLoaded === false ? 'NO' : '-')}}</td>
+                                <td>{{jl.equipment.equipmentWorking  ? 'YES' : (jl.equipment.equipmentWorking === false ? 'NO' : '-')}}</td>
+                            </tr>
+                            </tbody>
+                        </table>
+                        <div style="margin-bottom:15px;">Comments: {{jl.equipment.comments}}</div>
+                    </div>
+                </div>
+                <div class="content" ng-show="tab == 'service'">
+                    <div class="jl-entry" ng-repeat="jl in journeyLogs">
+                        <header class="row">
+                            <div class="small-9 medium-10 large-6 columns">
+                                <h3 class="journey-logs-header">{{'journeys.details.entryBy.label' | translate}}: {{jl.role}} - {{jl.username}} - {{jl.id}}
+                                    <span ng-if="journey.from === 'AMS' || journey.to === 'AMS'">
+                                        {{jl.stats.shift ? '('+jl.stats.shift+ ')' : ''}}
+                                    </span>
+                                </h3>
+                            </div>
+                            <div class="small-3 medium-2 large-6 columns">
+                                <h3 class="train-details">{{journey.from}} - {{journey.to}}</h3>
+                            </div>
+                        </header>
+                        <table width="100%">
+                            <thead>
+                            <tr>
+                                <th>Number of passengers who did not eat TSU for BP passengers</th>
+                                <th>Number of passengers who did not eat TSU for SP passengers</th>
+                                <th>Number of left hot options</th>
+                                <th>Number of left cold options</th>
+                                <th>Number of left sweet options</th>
+                                <th>The total sum of options</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr>
+                                <td>{{(jl.service.bpEatCount | num)}}</td>
+                                <td>{{(jl.service.spEatCount | num)}}</td>
+                                <td>{{jl.service.hotCount | num}}</td>
+                                <td>{{jl.service.coldCount | num}}</td>
+                                <td>{{jl.service.sweetCount | num}}</td>
+                                <td>{{(jl.service.hotCount | num) + (jl.service.coldCount | num) + (jl.service.sweetCount | num)}}
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="content" ng-show="tab == 'bar'">
+                    <div class="jl-entry" ng-repeat="jl in journeyLogs">
+                        <header class="row">
+                            <div class="small-9 medium-10 large-6 columns">
+                                <h3 class="journey-logs-header">{{'journeys.details.entryBy.label' | translate}}: {{jl.role}} - {{jl.username}} - {{jl.id}}
+                                    <span ng-if="journey.from === 'AMS' || journey.to === 'AMS'">
+                                        {{jl.stats.shift ? '('+jl.stats.shift+ ')' : ''}}
+                                    </span>
+                                </h3>
+                            </div>
+                            <div class="small-3 medium-2 large-6 columns">
+                                <h3 class="train-details">{{journey.from}} - {{journey.to}}</h3>
+                            </div>
+                        </header>
+                        <div class="stats bar">
+                            <div>
+                                <span><strong>Cash float correct? </strong></span>
+                                <span>{{jl.bar.cashFloatCorrect ? 'YES' : (jl.bar.cashFloatCorrect === false ? 'NO' : '-')}}</span>
+                            </div>
+                            <div ng-if="!jl.bar.cashFloatCorrect">
+                                <div><strong>Euro :</strong> {{jl.bar.cashFloatEuro}}</div>
+                                <div><strong>Pound :</strong> {{jl.bar.cashFloatPound}}</div>
+                            </div>
+                            <div>
+                                <span><strong>Cashing up correct? </strong></span>
+                                <span>{{jl.bar.cashingUpCorrect ? 'YES' : (jl.bar.cashingUpCorrect === false ? 'NO' : '-')}}</span>
+                            </div>
+                            <div ng-if="!jl.bar.cashingUpCorrect">
+                                <div><strong>Euro :</strong> {{jl.bar.cashingUpEuro}}</div>
+                                <div><strong>Pound :</strong> {{jl.bar.cashingUpPound}}</div>
+                            </div>
+                            <div>
+                                <span><strong>Bar open on time? </strong></span>
+                                <span>{{jl.bar.barOpenOnTime ? 'YES' : (jl.bar.barOpenOnTime === false ? 'NO' : '-')}}</span>
+                            </div>
+                            <div ng-if="!jl.bar.barOpenOnTime"><strong>Opening Hour: </strong>{{jl.bar.barOpenTime | date: 'HH:mm'}}</div>
+                            <div>
+                                <span><strong>Float Bag Number </strong></span>
+                                <span>{{jl.bar.floatBagNumber}}</span>
+                            </div>
+                            <div>
+                                <span><strong>Taking Bag Number </strong></span>
+                                <span>{{jl.bar.takingBagNumber}}</span>
+                            </div>
+                            <div ng-if="jl.bar.takingBagNumber">
+                                <div><strong>Euro :</strong> {{jl.bar.cashBagEuro}}</div>
+                                <div><strong>Pound :</strong> {{jl.bar.cashBagPound}}</div>
+                            </div>
+                            <div>
+                                <span><strong>Retails Bag Number </strong></span>
+                                <span>{{jl.bar.retailsBagNumber}}</span>
+                            </div>
+
+                            <div>
+                                <span><strong>OYSTER </strong></span>
+                                <span>{{jl.bar.oyster}}</span>
+                            </div>
+                            <div>
+                                <span><strong>RATP CARNET </strong></span>
+                                <span>{{jl.bar.ratpCarnet}}</span>
+                            </div>
+                            <div>
+                                <span><strong>RATP UNIT </strong></span>
+                                <span>{{jl.bar.ratpUnit}}</span>
+                            </div>
+                            <div>
+                                <span><strong>Cash Deposit Location </strong></span>
+                                <span>{{jl.bar.cashDepositLocation}}</span>
+                            </div>
+                            <div>
+                                <span><strong>Refusals at the bar? </strong></span>
+                                <span>{{jl.bar.refusalsAtBar ? 'YES' : (jl.bar.refusalsAtBar === false ? 'NO' : '-')}}</span>
+                            </div>
+                            <div>
+                                <span><strong>Alternative sold?</strong></span>
+                                <span>{{jl.bar.alternativeSold ? 'YES' : (jl.bar.alternativeSold === false ? 'NO' : '-')}}</span>
+                            </div>
+                            <div>
+                                <span><strong>The Description and Number of refused Products </strong></span>
+                                <span>{{jl.bar.descriptionOfRefusedProducts}}</span>
+                            </div>
+                        </div>
+                        <h6>Purser Name: {{jl.bar.purserName}}</h6>
+                        <h6>Purser ID: {{jl.bar.purserID}}</h6>
+                        <h6>Purser Comments: {{jl.bar.purserComments}}</h6>
+                        <div style="margin:5px 0;">Purser Signature</div>
+                        <img ng-if="!!jl.bar.purserSignature" ng-src="{{api}}/photos/{{jl.bar.purserSignature}}">
+                        <h5 class="bar_h3">Bar name : {{jl.bar.barName}}</h5>
+                        <h6>Bar ID: {{jl.bar.barID}}</h6>
+                        <h6>Bar Comments: {{jl.bar.barComments}}</h6>
+
+                        <div style="margin:5px 0;">Bar Signature</div>
+                        <img ng-if="!!jl.bar.barSignature" ng-src="{{api}}/photos/{{jl.bar.barSignature}}">
+                    </div>
+                </div>
+                <div class="content" ng-show="tab == 'issue_mom'">
+                    <div>
+                        <table width="100%">
+                            <thead>
+                            <tr>
+                                <th translate="issues.table.dateReported"></th>
+                                <th translate="issues.table.category"></th>
+                                <th translate="issues.table.subcategory"></th>
+                                <th translate="issues.table.passengerDetails"></th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <!-- TODO: Needs to be dynamic -->
+                            <tr ng-repeat="i in issues">
+                                <td><a href="#/issues/{{i.id}}" ng-show="i.id">{{i.created | date:['dd-MM-yyyy HH:mm']}}</a></td>
+                                <td>{{i.category}}</td>
+                                <td>{{i.subCategory}}</td>
+                                <!-- FIXME: This hsould be a list of passengers -->
+                                <td>
+                                    <ul class="no-bullet">
+                                        <li ng-repeat="p in i.passengers">{{p.name}}</li>
+                                    </ul>
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+<!-- End Journey Log -->
+</div>
