@@ -1,9 +1,0 @@
-<div>
-	<select name="{{name}}" style="display:none;" ng-model="ngModel" ng-options="uic.value as uic.name for uic in selectValues" options-disabled="uic.disabled for uic in selectValues"></select>
-	<div class="custom dropdown full" ng-init="menuOpen=false" ng-class="{open: menuOpen}">
-		<a class="current custom-select"></a>
-		<a class="selector custom-select" ng-click="menuOpen = !menuOpen"></a>
-		<ul>
-		</ul>
-	</div>
-</div>
